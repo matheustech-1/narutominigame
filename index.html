@@ -175,8 +175,8 @@ h1,h2,h3{letter-spacing:.02em}
 .hero p{color:#e2e0dc;text-shadow:0 2px 12px #000;margin-top:14px}
 .stage{position:relative;z-index:2;margin:-140px auto 0;padding:0;max-width:720px;height:300px;align-items:flex-end;gap:clamp(8px,8vw,92px);pointer-events:none}
 .hf{height:100%;display:flex;align-items:flex-end}
-.hf img{position:relative;z-index:1;height:clamp(190px,30vw,300px);width:auto;max-width:30vw;object-fit:contain;object-position:bottom;filter:drop-shadow(0 16px 16px #000b)}
-.hf:nth-child(2) img{height:clamp(220px,34vw,330px)}
+.hf img,.hf canvas{position:relative;z-index:1;height:clamp(190px,30vw,300px);width:auto;max-width:30vw;object-fit:contain;object-position:bottom;filter:drop-shadow(0 16px 16px #000b)}
+.hf:nth-child(2) img,.hf:nth-child(2) canvas{height:clamp(220px,34vw,330px)}
 .menu{position:relative;z-index:3;margin:6px auto 32px;max-width:380px;gap:9px}
 .menu .btn{min-height:54px}
 .menu .btn.ghost{background:#111820b8;border-color:#d7b46c66}
@@ -193,8 +193,9 @@ h1,h2,h3{letter-spacing:.02em}
 .card{position:relative;background:linear-gradient(145deg,#1a2229,#10161c);border:1px solid #46515a;border-radius:3px;padding:18px;box-shadow:0 14px 36px #0005;transition:transform .2s,border-color .2s,box-shadow .2s}
 .card:hover{transform:translateY(-4px);border-color:#c8a45c;box-shadow:0 18px 38px #0008}
 .card .cf{position:relative;height:220px;overflow:hidden;background:radial-gradient(ellipse at 50% 78%,#c5963d26,transparent 62%)}
-.card .cf svg,.card .cf img{height:100%;max-width:100%;object-fit:contain;filter:drop-shadow(0 12px 14px #000b)}
+.card .cf svg,.card .cf img,.card .cf canvas{height:100%;width:auto;max-width:100%;object-fit:contain;filter:drop-shadow(0 12px 14px #000b)}
 .card .cf img{position:absolute;inset:0;margin:auto;z-index:1}
+.card .cf canvas.portrait-cutout{height:auto;width:auto;max-height:100%;max-width:100%}
 .hud{background:linear-gradient(110deg,#1b252c,#11171d);border-color:#c3a15d66;border-radius:3px;box-shadow:0 14px 32px #0006}
 .missions{gap:9px}
 .mrow{background:linear-gradient(100deg,#172027,#11171d);border-color:#3c4850;border-radius:2px;padding:12px 14px;transition:border-color .16s,transform .16s}
@@ -204,9 +205,14 @@ h1,h2,h3{letter-spacing:.02em}
 .arena::after{height:100%;background:linear-gradient(0deg,#080c10a8,transparent 44%);}
 .side{z-index:1;padding:12px;background:linear-gradient(180deg,#080c1075,transparent 50%)}
 .fig{height:clamp(180px,32vw,280px)}
-.fig svg,.fig img{height:100%;width:auto;max-width:100%;object-fit:contain;filter:drop-shadow(0 14px 16px #000c)}
+.fig svg,.fig img,.fig canvas{height:100%;width:auto;max-width:100%;object-fit:contain;filter:drop-shadow(0 14px 16px #000c)}
 .fig{position:relative}
 .fig img{position:relative;z-index:1}
+.fig canvas.portrait-cutout{height:auto;width:auto;max-height:100%;max-width:100%}
+.portrait-cutout{height:100%;width:auto;max-width:100%;object-fit:contain;filter:drop-shadow(0 12px 14px #000b)}
+.fig .portrait-cutout{filter:drop-shadow(0 14px 16px #000c)}
+.hf .portrait-cutout{height:clamp(190px,30vw,300px);max-width:30vw;object-position:bottom;filter:drop-shadow(0 16px 16px #000b)}
+.hf:nth-child(2) .portrait-cutout{height:clamp(220px,34vw,330px)}
 .log{border-left-color:var(--gold);border-radius:0;background:#10171de8;border-top:1px solid #b5945366;border-bottom:1px solid #b5945366}
 .panel,.ov .box{border-radius:3px;background:linear-gradient(145deg,#1a232a,#11171d);border-color:#59616a}
 .result{max-width:720px}
@@ -222,8 +228,8 @@ label{display:grid;gap:7px;color:var(--mute);font-size:.9rem}
  .hero{min-height:390px;width:calc(100vw - 15px);margin-left:calc(50% - 50vw + 7.5px);padding:58px 18px 46px}
  .hero p{max-width:34ch}
  .stage{margin-top:-110px;height:205px;gap:0}
- .hf img{height:150px;max-width:32vw}
- .hf:nth-child(2) img{height:180px}
+ .hf img,.hf canvas,.hf .portrait-cutout{height:150px;max-width:32vw}
+ .hf:nth-child(2) img,.hf:nth-child(2) canvas,.hf:nth-child(2) .portrait-cutout{height:180px}
  .top{align-items:flex-start}
  .top .row{width:100%}
  .top .row .btn{flex:1}
@@ -424,6 +430,8 @@ if(save&&save.skin&&!SKINS.some(s=>s.id===save.skin)){save.skin='default';store(
 /* ---- Arte (SVG, cor do elemento via currentColor) ---- */
 function fig(look){
  const K='#1a1421',S='stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"';
+ if(look==='kakashi')return `<svg viewBox="0 0 180 240" aria-hidden="true"><defs><linearGradient id="k-vest" x2="0" y2="1"><stop stop-color="#566b73"/><stop offset="1" stop-color="#263943"/></linearGradient><linearGradient id="k-hair" x2="0" y2="1"><stop stop-color="#f4f5ee"/><stop offset="1" stop-color="#9caab1"/></linearGradient></defs><path d="M9 232q7-55 48-68l33 17 33-17q41 13 48 68z" fill="#243843" stroke="#111a20" stroke-width="4"/><path d="M55 163l35 25 35-25 15 69H40z" fill="url(#k-vest)" stroke="#17232a" stroke-width="4"/><path d="M70 178l20 17 20-17 8 54H62z" fill="#19262d"/><path d="M60 76q0-48 30-50 31 2 31 50v39q-5 34-31 38-26-4-30-38z" fill="#e6c4a5" stroke="#20272b" stroke-width="4"/><path d="M57 69q-7-28 4-47l14 15 6-27 15 19 14-22 6 26 17-17-3 36-12 14-8-19-12 16-10-19-11 20-9-12z" fill="url(#k-hair)" stroke="#3f4d53" stroke-width="4"/><path d="M57 66l66-18 5 16-68 21z" fill="#344e5d" stroke="#18252d" stroke-width="4"/><path d="M78 62l23-6-2 11-20 6z" fill="#bdc7c9"/><path d="M68 98q12-10 25-2M104 96q9-6 17 1" fill="none" stroke="#30383a" stroke-width="4"/><path d="M70 102q11-7 20 0M106 100q7-4 13 1" fill="none" stroke="#526f7b" stroke-width="3"/><path d="M96 103l-3 13" stroke="#9c7869" stroke-width="3"/><path d="M73 126q17 8 34-2v27q-17 16-34 0z" fill="#3d5058" stroke="#202a2e" stroke-width="4"/><path d="M76 133h27m-28 8h28m-27 8h24" stroke="#89969a" stroke-width="2"/><path d="M45 211l22-12 23 14 23-14 23 12" fill="none" stroke="#829198" stroke-width="3"/><path d="M136 24l10 17-5 16-10-13z" fill="#deded5"/></svg>`;
+ if(look==='hinata')return `<svg viewBox="0 0 180 240" aria-hidden="true"><defs><linearGradient id="h-jacket" x2="0" y2="1"><stop stop-color="#6e7b91"/><stop offset="1" stop-color="#354257"/></linearGradient><linearGradient id="h-hair" x2="0" y2="1"><stop stop-color="#36425f"/><stop offset="1" stop-color="#1d293f"/></linearGradient></defs><path d="M12 234q8-52 48-67l30 18 30-18q40 15 48 67z" fill="#303c50" stroke="#18202a" stroke-width="4"/><path d="M60 166l30 23 30-23 15 68H45z" fill="url(#h-jacket)" stroke="#273246" stroke-width="4"/><path d="M75 181l15 13 15-13 8 53H67z" fill="#222f42"/><path d="M60 79q0-51 30-54 31 3 31 54v38q-4 35-31 39-27-4-30-39z" fill="#f0d6c4" stroke="#303747" stroke-width="4"/><path d="M57 112q-10-43-1-73 9-25 34-25 28 0 39 27 9 25-1 75l-14-20-8-30-15 24-14-20-8 29z" fill="url(#h-hair)" stroke="#202b42" stroke-width="4"/><path d="M61 91q11-16 27-7m7-1q14-10 25 6" fill="none" stroke="#8794b2" stroke-width="4"/><path d="M68 93q9-8 18 0m14-1q9-8 17 1" fill="none" stroke="#bbc5db" stroke-width="3"/><ellipse cx="77" cy="94" rx="5" ry="7" fill="#d5d7e7"/><ellipse cx="108" cy="93" rx="5" ry="7" fill="#d5d7e7"/><circle cx="77" cy="95" r="2" fill="#596b8b"/><circle cx="108" cy="94" r="2" fill="#596b8b"/><path d="M91 100l-3 14" stroke="#c39f91" stroke-width="3"/><path d="M82 125q9 6 18 0" fill="none" stroke="#a9767b" stroke-width="3"/><path d="M60 114q9 32 30 34 21-2 31-34v22q-9 23-31 25-22-2-30-25z" fill="url(#h-hair)"/><path d="M47 209l20-12 23 15 23-15 20 12" fill="none" stroke="#a2adc0" stroke-width="3"/><path d="M27 172q-9 20-4 44m134-44q9 20 4 44" fill="none" stroke="#273246" stroke-width="9"/></svg>`;
  const head={
   naruto:`<path d="M39 27L31 7l17 12 4-17 10 17 12-17 2 20 14-11-7 24z" fill="${K}" ${S}/>`,
   sakura:`<path d="M39 22Q60 2 81 22L77 35H43z" fill="${K}" ${S}/><path d="M77 18l12-8-3 18z" fill="${K}" ${S}/>`,
@@ -458,9 +466,9 @@ const ART={
  naruto:'https://ninjaclassic.lovable.app/assets/naruto-DrBwLL8e.png',
  sakura:'https://ninjaclassic.lovable.app/assets/sakura-ChMh4G16.png',
  sasuke:'https://ninjaclassic.lovable.app/assets/sasuke-BjK5VUiA.png',
- kakashi:null,
+ kakashi:'Kakashi_Hatake_-_Allied_Shinobi_Forces.webp',
  gaara:'https://ninjaclassic.lovable.app/assets/gaara-C0WmC2b3.png',
- hinata:null,
+ hinata:'Nuns-hinata-hyuga.webp',
  zabuza:'https://ninjaclassic.lovable.app/assets/zabuza-FTeA4J_J.png',
  haku:'https://ninjaclassic.lovable.app/assets/haku-XMoIuETF.png',
  orochimaru:null,
@@ -473,7 +481,36 @@ const ART={
 };
 function portrait(look,alt){
  const src=ART[look];
- return src?`<span class="portrait-fallback">${fig(look)}</span><img src="${src}" alt="${alt}" loading="lazy" onload="this.previousElementSibling.hidden=true" onerror="this.remove()">`:fig(look);
+ return src?`<span class="portrait-fallback">${fig(look)}</span><img class="art-${look}" src="${src}" alt="${alt}" loading="lazy" onerror="this.remove()">`:fig(look);
+}
+function preparePortrait(img){
+ if(!['kakashi','hinata'].some(name=>img.classList.contains(`art-${name}`)))return;
+ try{
+  const width=img.naturalWidth,height=img.naturalHeight;
+  const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d',{willReadFrequently:true});
+  canvas.width=width;canvas.height=height;ctx.drawImage(img,0,0);
+  const frame=ctx.getImageData(0,0,width,height),pixels=frame.data,total=width*height;
+  const visited=new Uint8Array(total),stack=new Int32Array(total);let top=0;
+  const nearWhite=index=>{
+   const offset=index*4,r=pixels[offset],g=pixels[offset+1],b=pixels[offset+2];
+   return Math.min(r,g,b)>222&&Math.max(r,g,b)-Math.min(r,g,b)<34;
+  };
+  const seed=index=>{if(!visited[index]&&nearWhite(index)){visited[index]=1;stack[top++]=index}};
+  for(let x=0;x<width;x++){seed(x);seed((height-1)*width+x)}
+  for(let y=1;y<height-1;y++){seed(y*width);seed(y*width+width-1)}
+  while(top){
+   const index=stack[--top],x=index%width,offset=index*4;
+   const whiteness=Math.min(pixels[offset],pixels[offset+1],pixels[offset+2]);
+   pixels[offset+3]=Math.min(pixels[offset+3],Math.max(0,Math.round((255-whiteness)*8)));
+   if(x>0)seed(index-1);if(x<width-1)seed(index+1);
+   if(index>=width)seed(index-width);if(index+width<total)seed(index+width);
+  }
+  ctx.putImageData(frame,0,0);
+  const box=img.parentElement.getBoundingClientRect(),scale=Math.min(box.width/width,box.height/height);
+  canvas.className='portrait-cutout';canvas.style.width=`${Math.round(width*scale)}px`;canvas.style.height=`${Math.round(height*scale)}px`;canvas.setAttribute('role','img');canvas.setAttribute('aria-label',img.alt);
+  img.replaceWith(canvas);
+  const fallback=canvas.previousElementSibling;if(fallback?.classList.contains('portrait-fallback'))fallback.hidden=true;
+ }catch(error){console.warn('Falha ao recortar o retrato; mantendo a imagem original.',error)}
 }
 
 /* ---- Telas ---- */
@@ -596,6 +633,14 @@ function render(){
  else if(view==='battle')h=battleView();else if(view==='result')h=resultView();
  else if(view==='profile')h=profileView();else if(view==='training')h=trainingView();else if(view==='story')h=storyView();
  app.innerHTML=h+(how?howView():'');
+ app.querySelectorAll('.portrait-fallback + img').forEach(img=>{
+  const finishPortrait=()=>{
+   if(img.classList.contains('art-kakashi')||img.classList.contains('art-hinata'))preparePortrait(img);
+   else if(img.previousElementSibling?.classList.contains('portrait-fallback'))img.previousElementSibling.hidden=true;
+  };
+  if(img.complete&&img.naturalWidth)finishPortrait();
+  else img.addEventListener('load',finishPortrait,{once:true});
+ });
  if(view==='battle'){upd();showActions('main');renderLog()}
  window.scrollTo({top:0});
 }
