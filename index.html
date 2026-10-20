@@ -21,6 +21,7 @@ body{margin:0;background-color:var(--ink);color:var(--paper);font:16px/1.5 var(-
   background-image:radial-gradient(900px 520px at 85% -10%,#3b1721 0,transparent 60%),radial-gradient(700px 520px at -10% 105%,#102639 0,transparent 60%);
   background-attachment:fixed}
 .wrap{max-width:860px;margin:0 auto}
+.wrap{max-width:1120px}
 button{font:inherit;color:inherit}
 :focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 h1,h2,h3{font-family:var(--display);font-weight:400;letter-spacing:.05em;margin:0;text-wrap:balance}
@@ -143,6 +144,94 @@ p{margin:0}
 @keyframes rise{0%{opacity:0;transform:translate(-50%,10px) scale(.7)}15%{opacity:1;transform:translate(-50%,0) scale(1.15)}100%{opacity:0;transform:translate(-50%,-54px)}}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 @media (max-width:480px){.hud{grid-template-columns:1fr}.hud .hf{justify-self:center}.mrow{grid-template-columns:36px 1fr}.mrow .mact{grid-column:1/3}.mrow .mact .btn{width:100%}}
+
+/* Direção cinematográfica: paisagem, contraste de luz e acento dourado. */
+:root{
+ --ink:#090c10;--ink2:#111820;--panel:#131a20;--line:#37404a;
+ --paper:#f4f0e7;--mute:#a6adb2;--seal:#c79645;--gold:#e8c078;
+ --display:"Barlow Condensed","Impact",sans-serif;
+}
+body{
+ padding:0 22px 36px;overflow-x:hidden;
+ background-color:var(--ink);
+ background-image:linear-gradient(180deg,#0a0e12 0%,#111820 48%,#090c10 100%);
+}
+.wrap{max-width:1120px}
+h1,h2,h3{letter-spacing:.02em}
+.btn{border-radius:3px;text-transform:uppercase;letter-spacing:.09em;font-size:1.05rem}
+.btn.primary{background:#bd8c3e;border-color:#e5bd74;color:#11151a;box-shadow:0 8px 24px #0007}
+.btn.primary:hover:not(:disabled){background:#e5bd74;border-color:#f2d69c}
+.chip{border-radius:2px;text-transform:uppercase}
+.hero{
+ position:relative;isolation:isolate;min-height:430px;width:calc(100vw - 15px);margin-left:calc(50% - 50vw + 7.5px);padding:70px 22px 42px;
+ display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;
+ background:#10181e url('https://ninjaclassic.lovable.app/assets/shinobi-arena-DwgNZMCD.jpg') center 54%/cover no-repeat;
+ border-bottom:1px solid #d6ac5c66;
+}
+.hero::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,#090c10a6 0%,#0a0d12a8 35%,#0a0d12ed 100%),linear-gradient(90deg,#090c10a8,transparent 50%,#090c10a8)}
+.hero .seal{width:auto;height:auto;margin:0 auto 14px;padding:6px 12px;border:1px solid #e8c078;color:#f2d69c;border-radius:2px;box-shadow:none;font-size:.84rem;letter-spacing:.24em}
+.hero h1{font-size:clamp(3rem,7vw,6rem);line-height:.96;text-shadow:0 5px 28px #000}
+.hero h1::after{width:120px;height:2px;margin-top:20px;background:var(--gold);border-radius:0;transform:none}
+.hero p{color:#e2e0dc;text-shadow:0 2px 12px #000;margin-top:14px}
+.stage{position:relative;z-index:2;margin:-140px auto 0;padding:0;max-width:720px;height:300px;align-items:flex-end;gap:clamp(8px,8vw,92px);pointer-events:none}
+.hf{height:100%;display:flex;align-items:flex-end}
+.hf img{position:relative;z-index:1;height:clamp(190px,30vw,300px);width:auto;max-width:30vw;object-fit:contain;object-position:bottom;filter:drop-shadow(0 16px 16px #000b)}
+.hf:nth-child(2) img{height:clamp(220px,34vw,330px)}
+.menu{position:relative;z-index:3;margin:6px auto 32px;max-width:380px;gap:9px}
+.menu .btn{min-height:54px}
+.menu .btn.ghost{background:#111820b8;border-color:#d7b46c66}
+.sitebar{height:54px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #c7a25a3b;font-family:var(--display);letter-spacing:.16em;font-size:.82rem}
+.sitebar span,.home-footer span{color:var(--mute);font-size:.68rem}
+.top{padding:14px 0;border-bottom:1px solid #c7a25a3b;margin-bottom:18px}
+.top h2,.top h3{font-size:2rem}
+.grid{grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
+.grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:18px}
+.wrap:has(.top h2) .grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.feature-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;border-top:1px solid #c7a15c55;border-bottom:1px solid #c7a15c55;padding:18px 0;margin:18px auto 0;max-width:940px;text-align:center;font: .8rem var(--display);letter-spacing:.1em;color:#ded8cb}
+.home-status{text-align:center;color:var(--mute);font-size:.75rem;margin:12px auto}
+.home-footer{max-width:940px;margin:22px auto 0;padding:14px 0;border-top:1px solid #c7a15c3b;display:flex;justify-content:space-between;gap:12px;font: .75rem var(--display);letter-spacing:.1em;color:var(--gold)}
+.card{position:relative;background:linear-gradient(145deg,#1a2229,#10161c);border:1px solid #46515a;border-radius:3px;padding:18px;box-shadow:0 14px 36px #0005;transition:transform .2s,border-color .2s,box-shadow .2s}
+.card:hover{transform:translateY(-4px);border-color:#c8a45c;box-shadow:0 18px 38px #0008}
+.card .cf{position:relative;height:220px;overflow:hidden;background:radial-gradient(ellipse at 50% 78%,#c5963d26,transparent 62%)}
+.card .cf svg,.card .cf img{height:100%;max-width:100%;object-fit:contain;filter:drop-shadow(0 12px 14px #000b)}
+.card .cf img{position:absolute;inset:0;margin:auto;z-index:1}
+.hud{background:linear-gradient(110deg,#1b252c,#11171d);border-color:#c3a15d66;border-radius:3px;box-shadow:0 14px 32px #0006}
+.missions{gap:9px}
+.mrow{background:linear-gradient(100deg,#172027,#11171d);border-color:#3c4850;border-radius:2px;padding:12px 14px;transition:border-color .16s,transform .16s}
+.mrow:hover{border-color:#c7a15c;transform:translateX(3px)}
+.mrow.open{border-color:#d8ad61;box-shadow:inset 3px 0 #d8ad61}
+.arena{min-height:340px;align-items:stretch;border:1px solid #a88a4f88;border-radius:3px;background:linear-gradient(#080d12bd,#080d12dc),url('https://ninjaclassic.lovable.app/assets/shinobi-arena-DwgNZMCD.jpg') center/cover,#121a20;box-shadow:0 18px 42px #0008}
+.arena::after{height:100%;background:linear-gradient(0deg,#080c10a8,transparent 44%);}
+.side{z-index:1;padding:12px;background:linear-gradient(180deg,#080c1075,transparent 50%)}
+.fig{height:clamp(180px,32vw,280px)}
+.fig svg,.fig img{height:100%;width:auto;max-width:100%;object-fit:contain;filter:drop-shadow(0 14px 16px #000c)}
+.fig{position:relative}
+.fig img{position:relative;z-index:1}
+.log{border-left-color:var(--gold);border-radius:0;background:#10171de8;border-top:1px solid #b5945366;border-bottom:1px solid #b5945366}
+.panel,.ov .box{border-radius:3px;background:linear-gradient(145deg,#1a232a,#11171d);border-color:#59616a}
+.result{max-width:720px}
+.result h2{font-size:clamp(3rem,8vw,5rem)}
+select,input{font:inherit;color:var(--paper);background:#0c1217;border:1px solid #56616a;border-radius:2px;padding:10px 12px;min-height:44px}
+label{display:grid;gap:7px;color:var(--mute);font-size:.9rem}
+@media(max-width:640px){
+ .sitebar{height:48px}
+ .feature-strip{grid-template-columns:repeat(2,1fr);gap:14px 8px;padding:14px 0}
+ .home-footer{flex-direction:column;text-align:center}
+ .wrap:has(.top h2) .grid{grid-template-columns:1fr}
+ body{padding-inline:14px}
+ .hero{min-height:390px;width:calc(100vw - 15px);margin-left:calc(50% - 50vw + 7.5px);padding:58px 18px 46px}
+ .hero p{max-width:34ch}
+ .stage{margin-top:-110px;height:205px;gap:0}
+ .hf img{height:150px;max-width:32vw}
+ .hf:nth-child(2) img{height:180px}
+ .top{align-items:flex-start}
+ .top .row{width:100%}
+ .top .row .btn{flex:1}
+ .arena{min-height:300px;padding:8px;gap:4px}
+ .side{padding:8px 4px}
+ .fig{height:170px}
+ .mrow{gap:8px;padding:10px}
+}
 </style>
 
 <div class="wrap" id="app"></div>
@@ -154,73 +243,73 @@ const ELS={fogo:{n:'Fogo',beats:'vento'},vento:{n:'Vento',beats:'raio'},raio:{n:
 const mult=(a,d)=>!a||!d?1:ELS[a].beats===d?1.5:ELS[d].beats===a?0.75:1;
 
 const CLASSES={
- fogo:{id:'fogo',nome:'Kazan',cla:'Clã Brasa',el:'fogo',look:'spiky',
-  resumo:'Ataque alto e defesa baixa. Termina as lutas rápido.',
+ fogo:{id:'fogo',nome:'Naruto Uzumaki',cla:'Clã Uzumaki',el:'vento',look:'naruto',
+  resumo:'Determinado e resistente. Usa clones e técnicas de vento.',
   base:{hp:95,ck:18,atk:12,def:4,spd:6},
   jutsus:[
-   {id:'f1',n:'Sopro de Brasa',p:1.6,c:4,lv:1,d:'Sopro de fogo que queima o alvo à frente.'},
-   {id:'f2',n:'Dragão de Cinzas',p:2.2,c:6,lv:3,d:'Um dragão de chamas varre o campo de batalha.'},
-   {id:'f3',n:'Labareda Carmesim',p:2.7,c:8,lv:5,d:'Labaredas concentradas queimam tudo no caminho.'},
-   {id:'f4',n:'Inferno da Fênix',p:3.4,c:12,lv:8,d:'Uma fênix de fogo desce do céu e engole o alvo.'}]},
- agua:{id:'agua',nome:'Suiren',cla:'Clã Maré',el:'agua',look:'bun',
-  resumo:'Equilibrada e resistente. Os golpes mais fortes devolvem vida.',
+   {id:'f1',n:'Rasengan',p:1.6,c:4,lv:1,d:'Naruto concentra chakra numa esfera giratória.'},
+   {id:'f2',n:'Multiclones das Sombras',p:2.2,c:6,lv:3,d:'Naruto cria clones para atacar em conjunto.'},
+   {id:'f3',n:'Rasenshuriken',p:2.7,c:8,lv:5,d:'Uma técnica de vento atinge o alvo com grande alcance.'},
+   {id:'f4',n:'Rasengan Planetário',p:3.4,c:12,lv:8,d:'Naruto combina vários Rasengan num ataque poderoso.'}]},
+ agua:{id:'agua',nome:'Sakura Haruno',cla:'Konoha',el:'terra',look:'sakura',
+  resumo:'Ninja médica com força extraordinária e grande controle de chakra.',
   base:{hp:105,ck:22,atk:11,def:5,spd:5},
   jutsus:[
-   {id:'a1',n:'Jato de Maré',p:1.5,c:4,lv:1,d:'Jato de água em alta pressão contra o alvo.'},
-   {id:'a2',n:'Redemoinho Gélido',p:2.0,c:6,lv:3,drain:0.3,d:'Água gelada gira em volta do alvo e cura você um pouco.'},
-   {id:'a3',n:'Dragão das Águas',p:2.8,c:8,lv:5,d:'Um dragão feito de água investe contra o inimigo.'},
-   {id:'a4',n:'Tsunami Silencioso',p:3.5,c:12,lv:8,drain:0.35,d:'Uma onda gigante esmaga o alvo e renova suas forças.'}]},
- raio:{id:'raio',nome:'Raizo',cla:'Clã Trovão',el:'raio',look:'hood',
-  resumo:'Muito veloz. Os golpes de raio ignoram parte da defesa.',
+   {id:'a1',n:'Soco de Chakra',p:1.5,c:4,lv:1,d:'Sakura concentra força e atinge o solo junto ao alvo.'},
+   {id:'a2',n:'Força de Cem Selos',p:2.0,c:6,lv:3,drain:0.3,d:'Sakura libera chakra acumulado e recupera parte do vigor.'},
+   {id:'a3',n:'Impacto da Cerejeira',p:2.8,c:8,lv:5,d:'Um golpe de força excepcional abala a arena.'},
+   {id:'a4',n:'Arte Ninja: Regeneração Mitótica',p:3.5,c:12,lv:8,drain:0.35,d:'Sakura usa seu domínio médico para atacar e se recuperar.'}]},
+ raio:{id:'raio',nome:'Sasuke Uchiha',cla:'Clã Uchiha',el:'raio',look:'sasuke',
+  resumo:'Rival habilidoso que combina velocidade, fogo e relâmpago.',
   base:{hp:90,ck:18,atk:11,def:4,spd:9},
   jutsus:[
-   {id:'r1',n:'Faísca Cortante',p:1.5,c:3,lv:1,pierce:1,d:'Faísca veloz que atravessa a guarda do alvo.'},
-   {id:'r2',n:'Lança de Trovão',p:2.1,c:6,lv:3,pierce:1,d:'Uma lança de raio perfura a defesa do inimigo.'},
-   {id:'r3',n:'Corrente Violeta',p:2.6,c:8,lv:5,d:'Uma corrente elétrica violeta envolve e fulmina o alvo.'},
-   {id:'r4',n:'Tempestade Estelar',p:3.3,c:12,lv:8,pierce:1,d:'Uma tempestade de raios cai do céu e ignora a defesa.'}]}
- ,vento:{id:'vento',nome:'Hayate',cla:'Clã Vendaval',el:'vento',look:'spiky',
-  resumo:'Ágil e técnico. Equilibra velocidade com ataques consistentes.',
+   {id:'r1',n:'Katon: Gōkakyū no Jutsu',p:1.5,c:3,lv:1,d:'Sasuke lança uma grande bola de fogo.'},
+   {id:'r2',n:'Chidori',p:2.1,c:6,lv:3,pierce:1,d:'Sasuke concentra relâmpago na mão e avança.'},
+   {id:'r3',n:'Kirin',p:2.6,c:8,lv:5,d:'Um relâmpago poderoso atinge o campo de batalha.'},
+   {id:'r4',n:'Susanoo: Flecha de Indra',p:3.3,c:12,lv:8,pierce:1,d:'Sasuke dispara um ataque devastador de seu Susanoo.'}]},
+ vento:{id:'vento',nome:'Kakashi Hatake',cla:'Konoha',el:'raio',look:'kakashi',
+  resumo:'O ninja copiador domina técnicas variadas e lê os movimentos do rival.',
   base:{hp:98,ck:20,atk:10,def:5,spd:8},
   jutsus:[
-   {id:'v1',n:'Lâmina de Ar',p:1.5,c:4,lv:1,d:'Uma lâmina de vento corta o alvo.'},
-   {id:'v2',n:'Passo do Vendaval',p:2.0,c:6,lv:3,d:'Um avanço veloz atinge o inimigo.'},
-   {id:'v3',n:'Tornado Ascendente',p:2.7,c:8,lv:5,d:'Um tornado ergue e golpeia o alvo.'},
-   {id:'v4',n:'Ciclone Celeste',p:3.3,c:12,lv:8,d:'Um ciclone envolve todo o campo.'}]},
- terra:{id:'terra',nome:'Daichi',cla:'Clã Rocha',el:'terra',look:'hat',
-  resumo:'Resistente e firme. Aguenta golpes enquanto prepara o contra-ataque.',
+   {id:'v1',n:'Raikiri',p:1.5,c:4,lv:1,pierce:1,d:'Kakashi concentra relâmpago na mão e corta a guarda.'},
+   {id:'v2',n:'Clone das Sombras',p:2.0,c:6,lv:3,d:'Kakashi cria um clone para confundir e atacar.'},
+   {id:'v3',n:'Kamui',p:2.7,c:8,lv:5,d:'Kakashi distorce o espaço ao redor do alvo.'},
+   {id:'v4',n:'Susanoo: Kamui Shuriken',p:3.3,c:12,lv:8,d:'Kakashi usa seu Susanoo para lançar shuriken de chakra.'}]},
+ terra:{id:'terra',nome:'Gaara',cla:'Sunagakure',el:'terra',look:'gaara',
+  resumo:'Kazekage protegido pela areia, capaz de atacar e defender ao mesmo tempo.',
   base:{hp:115,ck:18,atk:10,def:7,spd:4},
   jutsus:[
-   {id:'t1',n:'Punho de Pedra',p:1.5,c:4,lv:1,d:'Um golpe sólido atinge o alvo.'},
-   {id:'t2',n:'Muralha de Rocha',p:2.0,c:6,lv:3,d:'Pedras avançam contra o inimigo.'},
-   {id:'t3',n:'Tremor Profundo',p:2.7,c:8,lv:5,d:'O chão treme sob os pés do adversário.'},
-  {id:'t4',n:'Colosso de Granito',p:3.3,c:12,lv:8,d:'Um colosso de pedra esmaga o alvo.'}]},
- sombra:{id:'sombra',nome:'Yoru',cla:'Clã Eclipse',el:'raio',look:'horns',
-  resumo:'Especialista em pressão. Golpes precisos atravessam a guarda.',
+  {id:'t1',n:'Caixão de Areia',p:1.5,c:4,lv:1,d:'A areia de Gaara envolve o alvo.'},
+  {id:'t2',n:'Escudo de Areia',p:2.0,c:6,lv:3,d:'Gaara molda a areia para conter o adversário.'},
+  {id:'t3',n:'Funeral do Deserto',p:2.7,c:8,lv:5,d:'A areia comprimida atinge o alvo com força.'},
+  {id:'t4',n:'Terceiro Olho e Areia',p:3.3,c:12,lv:8,d:'Gaara controla uma grande massa de areia na arena.'}]},
+ sombra:{id:'sombra',nome:'Hinata Hyuga',cla:'Clã Hyuga',el:'agua',look:'hinata',
+  resumo:'Especialista no Byakugan e no estilo Punho Gentil.',
   base:{hp:92,ck:21,atk:12,def:3,spd:7},
   jutsus:[
-  {id:'s1',n:'Estocada Sombria',p:1.5,c:4,lv:1,pierce:1,d:'Um golpe preciso encontra uma abertura na guarda.'},
-  {id:'s2',n:'Passo da Penumbra',p:2.0,c:6,lv:3,d:'Yoru surge ao lado do alvo e ataca.'},
-  {id:'s3',n:'Lança do Eclipse',p:2.7,c:8,lv:5,pierce:1,d:'Uma lança escura perfura a defesa.'},
-  {id:'s4',n:'Noite Sem Lua',p:3.3,c:12,lv:8,d:'Uma onda de energia cobre a arena.'}]}
+  {id:'s1',n:'Punho Gentil',p:1.5,c:4,lv:1,pierce:1,d:'Hinata atinge os pontos de chakra do adversário.'},
+  {id:'s2',n:'Byakugan',p:2.0,c:6,lv:3,d:'Hinata prevê os movimentos e encontra uma abertura.'},
+  {id:'s3',n:'Oito Trigramas: Sessenta e Quatro Palmas',p:2.7,c:8,lv:5,pierce:1,d:'Uma sequência precisa de golpes atravessa a guarda.'},
+  {id:'s4',n:'Punhos de Leões Gêmeos',p:3.3,c:12,lv:8,d:'Hinata envolve as mãos em chakra e avança.'}]}
 };
 
 const ENEMIES=[
- {nome:'Bandido da Estrada',el:'terra',look:'hood',js:[{n:'Pedrada Rápida',p:1.4,c:3}]},
- {nome:'Lobo Sombrio',el:'vento',look:'wolf',js:[{n:'Uivo Cortante',p:1.5,c:3}]},
- {nome:'Renegado da Névoa',el:'agua',look:'hood',js:[{n:'Lâmina de Água',p:1.7,c:4}]},
- {nome:'Mestre das Chamas Negras',el:'fogo',look:'spiky',js:[{n:'Labareda Negra',p:1.9,c:5}]},
- {nome:'Guardião do Templo',el:'terra',look:'hat',js:[{n:'Punho de Rocha',p:2.0,c:5}]},
- {nome:'Espadachim do Trovão',el:'raio',look:'hood',js:[{n:'Corte Relâmpago',p:2.0,c:5,pierce:1}]},
- {nome:'Sacerdotisa do Vento',el:'vento',look:'bun',js:[{n:'Lâmina de Ar',p:1.8,c:4},{n:'Tornado de Papel',p:2.3,c:6}]},
- {nome:'Caçador de Selos',el:'agua',look:'hat',js:[{n:'Selo Afogador',p:2.4,c:6}]},
- {nome:'Comandante Kuroi',el:'raio',look:'hood',js:[{n:'Trovão Negro',p:2.5,c:7,pierce:1}]},
- {nome:'Yami, Senhor das Sombras',el:'terra',look:'horns',boss:1,js:[{n:'Garras das Trevas',p:2.0,c:4,neutral:1},{n:'Abismo Sombrio',p:2.6,c:8,neutral:1},{n:'Eclipse Final',p:3.2,c:12,pierce:1,neutral:1}]}
+ {nome:'Zabuza Momochi',cla:'Nukenin',village:'Kirigakure',el:'agua',look:'zabuza',historia:'O espadachim renegado da Névoa bloqueia a ponte durante a primeira missão fora da Folha.',js:[{n:'Corte da Kubikiribōchō',p:1.4,c:3}]},
+ {nome:'Haku',cla:'Clã Yuki',village:'Kirigakure',el:'agua',look:'haku',historia:'Haku protege Zabuza com espelhos de gelo e coloca à prova os laços da equipe 7.',js:[{n:'Espelhos Demoníacos de Gelo',p:1.5,c:3},{n:'Senbon',p:1.8,c:5}]},
+ {nome:'Orochimaru',cla:'Sannin Lendário',village:'Otogakure',el:'terra',look:'orochimaru',historia:'O Sannin renegado aparece na prova Chunin em busca do poder do Sharingan.',js:[{n:'Estilo da Cobra',p:1.7,c:4}]},
+ {nome:'Gaara',cla:'Kazekage',village:'Sunagakure',el:'terra',look:'gaara',historia:'O jinchuriki da Areia enfrenta Naruto durante a invasão de Konoha.',js:[{n:'Caixão de Areia',p:1.9,c:5}]},
+ {nome:'Itachi Uchiha',cla:'Akatsuki',village:'Konohagakure',el:'fogo',look:'itachi',historia:'Itachi retorna à Folha com Kisame e cruza o caminho de Sasuke.',js:[{n:'Amaterasu',p:2.0,c:5}]},
+ {nome:'Kisame Hoshigaki',cla:'Akatsuki',village:'Kirigakure',el:'agua',look:'kisame',historia:'O parceiro de Itachi empunha Samehada e luta usando técnicas de água.',js:[{n:'Técnica da Prisão de Água',p:2.0,c:5}]},
+ {nome:'Deidara',cla:'Akatsuki',village:'Iwagakure',el:'terra',look:'deidara',historia:'O artista da Akatsuki transforma argila explosiva em ataques aéreos.',js:[{n:'Argila Explosiva C1',p:1.8,c:4},{n:'Argila Explosiva C2',p:2.3,c:6}]},
+ {nome:'Pain (Nagato)',cla:'Akatsuki',village:'Amegakure',el:'raio',look:'pain',historia:'Pain invade a Folha e confronta Naruto sobre o ciclo de ódio.',js:[{n:'Shinra Tensei',p:2.4,c:6}]},
+ {nome:'Obito Uchiha',cla:'Akatsuki',village:'Konohagakure',el:'fogo',look:'obito',historia:'O homem por trás da máscara revela seu plano para o mundo ninja.',js:[{n:'Kamui',p:2.5,c:7,pierce:1}]},
+ {nome:'Madara Uchiha',cla:'Clã Uchiha',village:'Konohagakure',el:'raio',look:'madara',boss:1,historia:'No confronto final da guerra, Madara usa o poder do Susanoo contra a Aliança Shinobi.',js:[{n:'Susanoo',p:2.0,c:4,neutral:1},{n:'Meteoro Celestial',p:2.6,c:8,neutral:1},{n:'Liberação de Madeira: Mundo das Árvores',p:3.2,c:12,pierce:1,neutral:1}]}
 ];
 const SKINS=[
-  {id:'default',n:'Traje do clã',look:null},
-  {id:'spiky',n:'Cabelo em espinhos',look:'spiky'},
-  {id:'hood',n:'Capuz de viagem',look:'hood'},
-  {id:'hat',n:'Chapéu de missão',look:'hat'}
+  {id:'default',n:'Visual clássico',look:null},
+  {id:'naruto',n:'Visual Naruto',look:'naruto'},
+  {id:'sasuke',n:'Visual Sasuke',look:'sasuke'},
+  {id:'kakashi',n:'Visual Kakashi',look:'kakashi'}
 ];
 
 const need=l=>40*l;
@@ -252,10 +341,7 @@ const DattebayoData=(()=>{
  const templates=ENEMIES.map(enemy=>({...enemy,js:enemy.js.map(j=>({...j}))}));
  const elements=['fogo','agua','vento','raio','terra'];
  const fallback=[
-  {name:'Kazan',clan:'Clã Brasa',village:'Desconhecido'},
-  {name:'Suiren',clan:'Clã Maré',village:'Desconhecido'},
-  {name:'Raizo',clan:'Clã Trovão',village:'Desconhecido'},
-  ...ENEMIES.slice(0,7).map(enemy=>({name:enemy.nome,clan:'Desconhecido',village:'Desconhecido'}))
+  ...ENEMIES.map(enemy=>({name:enemy.nome,clan:enemy.cla,village:enemy.village}))
  ];
  let state='loading',profiles=fallback,source='local';
  const readCache=()=>{
@@ -280,9 +366,9 @@ const DattebayoData=(()=>{
   return elements[hash%elements.length];
  };
  const missionsFor=rows=>rows.slice(0,10).map((profile,index)=>{
-  const template=templates[index],el=elementFor(profile);
+  const template=templates[index],el=template.el;
   return{
-   ...template,nome:profile.name,el,clan:profile.clan,village:profile.village,
+  ...template,el,clan:template.cla,village:template.village,
    js:template.js.map(j=>({...j}))
   };
  });
@@ -332,36 +418,80 @@ const chip=el=>`<span class="chip" data-el="${el}">${ELS[el].n}</span>`;
 const pct=(a,b)=>Math.max(0,Math.min(100,Math.round(a/b*100)));
 
 let save=load(),view='menu',B=null,R=null,how=false,confirmNew=false,sel=null,confirmTimer=null,storyStage=0;
+if(save&&save.cls&&!CLASSES[save.cls]){save.cls='fogo';store(save)}
+if(save&&save.skin&&!SKINS.some(s=>s.id===save.skin)){save.skin='default';store(save)}
 
 /* ---- Arte (SVG, cor do elemento via currentColor) ---- */
 function fig(look){
  const K='#1a1421',S='stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"';
- if(look==='wolf')return `<svg viewBox="0 0 160 130" aria-hidden="true"><g fill="${K}" ${S}><path d="M28 80C6 72 4 42 20 30c-2 22 12 30 24 38z"/><ellipse cx="70" cy="84" rx="42" ry="24"/><rect x="36" y="98" width="10" height="26" rx="3"/><rect x="52" y="100" width="10" height="24" rx="3"/><rect x="84" y="100" width="10" height="24" rx="3"/><rect x="100" y="98" width="10" height="26" rx="3"/><path d="M106 62l26-12 22 24-20 14-26 2z"/><path d="M112 60l4-24 12 16z"/><path d="M124 52l10-22 6 26z"/></g><circle cx="134" cy="68" r="3.5" fill="currentColor"/></svg>`;
  const head={
+  naruto:`<path d="M39 27L31 7l17 12 4-17 10 17 12-17 2 20 14-11-7 24z" fill="${K}" ${S}/>`,
+  sakura:`<path d="M39 22Q60 2 81 22L77 35H43z" fill="${K}" ${S}/><path d="M77 18l12-8-3 18z" fill="${K}" ${S}/>`,
+  sasuke:`<path d="M39 28L34 7l15 14 8-20 7 20 15-15-4 25z" fill="${K}" ${S}/>`,
+  kakashi:`<path d="M38 28L33 7l16 14 8-20 8 18 13-13-4 24z" fill="${K}" ${S}/><path d="M43 29L82 25 78 35H44z" fill="currentColor"/>`,
+  gaara:`<path d="M40 30Q38 8 60 7q22 2 20 25l-7-6q-13-7-26 2z" fill="${K}" ${S}/>`,
+  hinata:`<path d="M40 29Q37 9 60 8q23 1 20 22l-8-5q-12-4-24 4z" fill="${K}" ${S}/>`,
+  zabuza:`<path d="M35 21Q60 5 85 21v10H35z" fill="${K}" ${S}/><path d="M42 32h36v9H42z" fill="currentColor"/><path d="M45 36h30" stroke="${K}" stroke-width="2"/>`,
+  haku:`<path d="M42 30Q38 9 60 8q22 1 18 22l-5-4q-13-5-25 4z" fill="${K}" ${S}/><path d="M39 34q-9 4-7 22M81 34q9 4 7 22" fill="none" stroke="currentColor" stroke-width="3"/>`,
+  orochimaru:`<path d="M41 34Q33 14 58 8q27-1 23 27l-8-9q-12-4-25 8z" fill="${K}" ${S}/><path d="M47 42h26" stroke="currentColor" stroke-width="2"/>`,
+  itachi:`<path d="M38 29L34 4l16 17 9-18 7 19 16-15-5 27z" fill="${K}" ${S}/><path d="M43 31h34" stroke="currentColor" stroke-width="5"/>`,
+  kisame:`<path d="M37 28Q38 7 60 7q22 1 23 22l-8-5H45z" fill="${K}" ${S}/><path d="M45 39q15 8 30 0" fill="none" stroke="currentColor" stroke-width="2"/>`,
+  deidara:`<path d="M40 29Q37 8 60 7q21 1 20 23l-8-5q-14-5-25 4z" fill="${K}" ${S}/><circle cx="81" cy="48" r="7" fill="currentColor"/>`,
+  pain:`<path d="M38 27L34 7l15 14 8-19 8 19 14-14-4 26z" fill="${K}" ${S}/><path d="M43 40h34M45 47h30" stroke="currentColor" stroke-width="2"/>`,
+  obito:`<path d="M39 28Q37 8 60 7q23 1 21 23l-8-5q-13-5-25 4z" fill="${K}" ${S}/><path d="M66 37l10 10-10 10" fill="none" stroke="currentColor" stroke-width="3"/>`,
+  madara:`<path d="M32 32Q27 0 60 3q33-1 28 30L77 22 68 9 60 24 50 8 44 25z" fill="${K}" ${S}/><path d="M33 57L18 160h84L87 57 78 43H42z" fill="currentColor" opacity=".55"/>`,
   spiky:`<path d="M41 30L34 8l15 11 6-17 8 17 12-15 2 18 10-10-5 21z" fill="${K}" ${S}/>`,
   hood:`<path d="M38 42Q38 8 60 8q22 0 22 34l-8-8Q60 24 46 34z" fill="${K}" ${S}/>`,
   hat:`<ellipse cx="60" cy="24" rx="36" ry="9" fill="${K}" ${S}/><path d="M38 24Q60 -6 82 24z" fill="${K}" ${S}/>`,
   bun:`<circle cx="60" cy="10" r="9" fill="${K}" ${S}/><path d="M41 34Q60 8 79 34z" fill="${K}" ${S}/>`,
   horns:`<path d="M38 42Q38 8 60 8q22 0 22 34l-8-8Q60 24 46 34z" fill="${K}" ${S}/><path d="M44 16L32 -8l22 12zM76 16L88 -8 66 4z" fill="${K}" ${S}/>`
  }[look]||'';
- const band=(look==='spiky'||look==='bun')?`<rect x="41" y="30" width="38" height="8" fill="currentColor"/><rect x="54" y="30" width="12" height="8" fill="#e8e1d0"/>`:'';
- const cape=look==='horns'?`<path d="M34 58L6 160l54-22 54 22L86 58z" fill="currentColor" opacity=".22"/>`:'';
- return `<svg viewBox="0 -12 120 182" aria-hidden="true">${cape}<g fill="${K}" ${S}><path d="M42 104l-4 58h18l4-40 4 40h18l-4-58z"/><path d="M36 64L18 98l10 6 20-28z"/><path d="M38 60q22-10 44 0l4 48H34z"/><path d="M84 64l22 18-6 10-26-14z"/><circle cx="60" cy="38" r="19"/></g><path d="M106 84l8-44" stroke="#cfd3da" stroke-width="3.5" stroke-linecap="round"/><path d="M42 58q18 12 36 0l10 20-12-4-6 14-6-16-8 14-4-14-10 6z" fill="currentColor" opacity=".9"/>${head}${band}<path d="M50 42h8M64 42h8" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>`;
+ const band=['naruto','sasuke','kakashi','sakura','gaara','hinata','itachi','pain'].includes(look)?`<rect x="41" y="30" width="38" height="8" fill="currentColor"/><rect x="54" y="30" width="12" height="8" fill="#d8d9d4"/>`:'';
+ const cloak=['itachi','kisame','deidara','pain','obito','madara'].includes(look)?`<path d="M34 58L9 160l51-18 51 18L86 58l-8-10H42z" fill="#201016" stroke="currentColor" stroke-width="3"/>`:'';
+ const mark=look==='gaara'?`<text x="69" y="42" fill="currentColor" font-size="10" font-weight="bold">愛</text>`:'';
+ const eyes=look==='sakura'?`<path d="M49 41h8m5 0h8" stroke="currentColor" stroke-width="3"/>`:`<path d="M49 42h8m6 0h8" stroke="${look==='hinata'?'#b9d8dd':'currentColor'}" stroke-width="3" stroke-linecap="round"/>`;
+ const kunai=['naruto','sasuke','kakashi','hinata'].includes(look)?`<path d="M104 83l12-42m-17 20l10 3" stroke="#cfd3da" stroke-width="3" stroke-linecap="round"/>`:'';
+ return `<svg viewBox="0 -12 120 182" aria-hidden="true">${cloak}<g fill="${K}" ${S}><path d="M42 104l-4 58h18l4-40 4 40h18l-4-58z"/><path d="M36 64L18 98l10 6 20-28z"/><path d="M38 60q22-10 44 0l4 48H34z"/><path d="M84 64l22 18-6 10-26-14z"/><circle cx="60" cy="38" r="19"/></g><path d="M42 58q18 12 36 0l10 20-12-4-6 14-6-16-8 14-4-14-10 6z" fill="currentColor" opacity=".9"/>${head}${band}${eyes}${mark}${kunai}</svg>`;
 }
 const figBox=(look,el,cls='')=>`<div class="fig ${cls}" style="color:var(--${el})">${fig(look)}</div>`;
+const ART={
+ naruto:'https://ninjaclassic.lovable.app/assets/naruto-DrBwLL8e.png',
+ sakura:'https://ninjaclassic.lovable.app/assets/sakura-ChMh4G16.png',
+ sasuke:'https://ninjaclassic.lovable.app/assets/sasuke-BjK5VUiA.png',
+ kakashi:null,
+ gaara:'https://ninjaclassic.lovable.app/assets/gaara-C0WmC2b3.png',
+ hinata:null,
+ zabuza:'https://ninjaclassic.lovable.app/assets/zabuza-FTeA4J_J.png',
+ haku:'https://ninjaclassic.lovable.app/assets/haku-XMoIuETF.png',
+ orochimaru:null,
+ itachi:'https://ninjaclassic.lovable.app/assets/itachi-DfQh8HYB.png',
+ kisame:'https://ninjaclassic.lovable.app/assets/kisame-0qGiqxOJ.png',
+ deidara:'https://ninjaclassic.lovable.app/assets/deidara-CBvcmQdT.png',
+ pain:null,
+ obito:null,
+ madara:'https://ninjaclassic.lovable.app/assets/madara-BaXzOkc7.png'
+};
+function portrait(look,alt){
+ const src=ART[look];
+ return src?`<span class="portrait-fallback">${fig(look)}</span><img src="${src}" alt="${alt}" loading="lazy" onload="this.previousElementSibling.hidden=true" onerror="this.remove()">`:fig(look);
+}
 
 /* ---- Telas ---- */
 function menuView(){
  const has=!!save;
- return `<div class="hero"><div class="seal" aria-hidden="true">CN</div><h1>Caminho Ninja</h1>
- <p>Batalha ninja por turnos. Escolha seu clã, vença 10 missões e derrote o Senhor das Sombras.</p>
- <p class="mute" id="data-status" role="status" aria-live="polite" style="font-size:.82rem;margin-top:8px">${DattebayoData.status()}</p></div>
- <div class="stage">${['fogo','agua','raio'].map(k=>`<div class="hf" style="color:var(--${k})">${fig(CLASSES[k].look)}</div>`).join('')}</div>
+ return `<div class="sitebar"><b>CAMINHO NINJA</b><span>NARUTO · FAN GAME</span></div>
+ <div class="hero"><div class="seal" aria-hidden="true">A VONTADE DO FOGO</div><h1>Naruto Caminho Ninja</h1>
+ <p>Escolha seu ninja, enfrente rivais da história de Naruto e avance pela jornada shinobi.</p>
+ </div>
+ <div class="stage">${['raio','fogo','agua'].map(k=>`<div class="hf" style="color:var(--${CLASSES[k].el})">${portrait(CLASSES[k].look,CLASSES[k].nome)}</div>`).join('')}</div>
  <div class="menu">
   <button class="btn primary" data-act="new">${confirmNew?'Confirmar: apagar progresso':'Jogar'}</button>
   <button class="btn" data-act="cont" ${has?'':'disabled'}>${has?`Continuar · ${CLASSES[save.cls].nome} Nv ${save.lv}`:'Continuar'}</button>
   <button class="btn ghost" data-act="how">Como jogar</button>
- </div>`;
+ </div>
+ <div class="feature-strip"><span>BATALHAS POR TURNOS</span><span>10 MISSÕES</span><span>5 ELEMENTOS</span><span>UMA LENDA</span></div>
+ <div class="home-status" id="data-status" role="status" aria-live="polite">${DattebayoData.status()}</div>
+ <footer class="home-footer">A VONTADE DO FOGO NUNCA SE APAGA. <span>PROJETO DE FÃS · NÃO OFICIAL</span></footer>`;
 }
 function classView(){
  return `<div class="top"><h2>Escolha seu clã</h2><button class="btn ghost small" data-act="menu">Voltar</button></div>
@@ -369,7 +499,7 @@ function classView(){
  <div class="row" style="margin-top:14px"><label>Prévia visual <select name="skin-preview">${SKINS.map(s=>`<option value="${s.id}" ${sel===s.id?'selected':''}>${s.n}</option>`).join('')}</select></label></div>
  <div class="grid">${Object.values(CLASSES).map(c=>{
   const s=stats(c,1);
-  return `<div class="card"><div class="cf" style="color:var(--${c.el})">${fig(SKINS.find(s=>s.id===sel)?.look||c.look)}</div>
+  return `<div class="card"><div class="cf" style="color:var(--${c.el})">${portrait(c.look, c.nome)}</div>
   <div class="spread"><h3>${c.nome}</h3>${chip(c.el)}</div>
   <div class="mute" style="font-size:.9rem">${c.cla}. ${c.resumo}</div>
   <div class="mini num"><span>HP</span><div class="bar hp"><i style="width:${pct(s.hp,130)}%"></i></div><span>${s.hp}</span>
@@ -403,19 +533,19 @@ function profileView(){
 }
 function trainingView(){
  return `<div class="top"><h2>Arena de treinamento</h2><button class="btn ghost small" data-act="map">Voltar ao mapa</button></div>
- <p class="mute">Ajuste o alvo para comparar dano. O treino não concede XP e não altera o progresso da campanha.</p>
+ <p class="mute">Escolha um adversário da história para sparring. O treino não concede XP nem altera a campanha.</p>
  <div class="panel" style="margin-top:16px"><label>HP do alvo <input name="train-hp" type="number" min="50" max="500" value="180"></label>
  <label>Defesa do alvo <input name="train-def" type="number" min="0" max="20" value="8"></label>
- <label>Elemento do alvo <select name="train-el">${Object.entries(ELS).map(([id,e])=>`<option value="${id}">${e.n}</option>`).join('')}</select></label>
+ <label>Adversário <select name="train-enemy">${ENEMIES.map((e,i)=>`<option value="${i}">${e.nome} · ${e.cla}</option>`).join('')}</select></label>
  <button class="btn primary" data-act="start-training">Iniciar treino</button></div>`;
 }
 function storyView(){
  const mi=Math.min(save.storyMission||0,ENEMIES.length-1),chapter=mi<3?0:mi<7?1:2,chapters=['Ecos da Folha','Sombras da Névoa','O último selo'];
- const speaker=storyStage?'Líder da equipe':chapter===0?'Líder da Folha':chapter===1?'Mensageira da Névoa':'Guardião do templo';
- const dialogue=storyStage?`A missão é ${ENEMIES[mi].nome}. Mantenha a atenção e volte com o selo.`:chapter===0?'Alguém está reunindo os selos antigos. Investigue a estrada e descubra quem está por trás disso.':chapter===1?'Os renegados também procuram o artefato. Atravesse a névoa antes que encontrem o próximo selo.':'O último selo está no templo. O Senhor das Sombras está esperando por você.';
+ const speaker=storyStage?ENEMIES[mi].nome:chapter===0?'Kakashi Hatake':chapter===1?'Tsunade':'Minato Namikaze';
+ const dialogue=ENEMIES[mi].historia;
  return `<div class="top"><h2>Modo história</h2><button class="btn ghost small" data-act="map">Voltar ao mapa</button></div>
  <div class="panel"><span class="chip">Capítulo ${chapter+1}</span><h3>${chapters[chapter]}</h3>
- <p><b>${speaker}</b></p><p>${dialogue}</p><p class="mute">Missão ${mi+1} de ${ENEMIES.length}: ${ENEMIES[mi].nome}</p>
+ <p><b>${speaker}</b></p><p>${storyStage?`${ENEMIES[mi].nome} prepara-se para lutar. ${dialogue}`:dialogue}</p><p class="mute">Missão ${mi+1} de ${ENEMIES.length}: ${ENEMIES[mi].nome}</p>
  <div class="row">${storyStage?`<button class="btn primary" data-act="story-fight" data-i="${mi}">Lutar</button>`:`<button class="btn primary" data-act="story-next-dialogue">Continuar</button>`}<button class="btn" data-act="story-skip" data-i="${mi}">Pular diálogo</button></div></div>`;
 }
 function battleView(){
@@ -424,9 +554,9 @@ function battleView(){
   <div class="tag"><b>${f.n}</b>${chip(f.el)}</div>
   <div class="bars"><div class="bl"><span>HP</span><span class="num" data-t="hp-${cls}"></span></div><div class="bar hp"><i data-b="hp-${cls}"></i></div>
   <div class="bl"><span>Chakra</span><span class="num" data-t="ck-${cls}"></span></div><div class="bar ck"><i data-b="ck-${cls}"></i></div></div>
-  ${figBox(cls==='you'?(SKINS.find(s=>s.id===save.skin)?.look||CLASSES[save.cls].look):look,f.el)}</div>`;
+  <div class="fig" style="color:var(--${f.el})">${portrait(cls==='you'?CLASSES[save.cls].look:look,f.n)}</div></div>`;
  return `<div class="top"><h3>${B.training?'Arena de treino':`Missão ${B.mi+1}${ENEMIES[B.mi].boss?' · Chefe':''}`} · Rodada <span id="rd" class="num">1</span></h3><button class="btn ghost small" data-act="flee">${B.training?'Encerrar treino':'Fugir'}</button></div>
- <div class="arena" id="arena">${side(p,'you',CLASSES[save.cls].look)}${side(e,'foe',B.training?'hat':ENEMIES[B.mi].look,ENEMIES[B.mi].boss)}
+ <div class="arena" id="arena">${side(p,'you',CLASSES[save.cls].look)}${side(e,'foe',ENEMIES[B.mi].look,ENEMIES[B.mi].boss)}
   <div class="flash" id="flash"></div><div class="banner" id="banner"></div></div>
  <div class="log" id="log" aria-live="polite"></div>
  <div class="actions" id="actions"></div>`;
@@ -441,7 +571,7 @@ function resultView(){
    ${save.lv>r.before.lv?`<div class="adv">Subiu do nível ${r.before.lv} para o ${save.lv}. Atributos aumentaram.</div>`:''}
    ${r.rankUp?`<div class="adv">Promoção: você agora é ${rank(save.lv)}.</div>`:''}
    ${r.newJ.map(j=>`<div><b class="adv">Novo jutsu: ${j.n}</b><div class="mute" style="font-size:.9rem">${j.d}</div></div>`).join('')}
-   ${r.final?`<div class="adv">Campanha concluída. ${c.nome} derrotou o Senhor das Sombras.</div>`:''}</div>
+  ${r.final?`<div class="adv">Campanha concluída. ${c.nome} venceu Madara Uchiha.</div>`:''}</div>
   <div class="row" style="justify-content:center">${r.story&&r.win?`<button class="btn primary" data-act="story">Continuar história</button>`:''}${next?`<button class="btn primary" data-act="fight" data-i="${B.mi+1}">Próxima missão</button>`:''}
   ${!r.win?`<button class="btn primary" data-act="${r.story?'story-retry':'fight'}" data-i="${B.mi}">Tentar de novo</button>`:''}
    <button class="btn" data-act="map">Mapa</button></div></div>`;
@@ -476,8 +606,8 @@ function startBattle(i,training=false,config={}){
   const playerHp=st.hp,enemyHp=training?Math.max(50,Math.min(500,config.hp)):es.hp;
  B={mi:i,busy:false,over:false,item:1,round:1,log:[],training,story:!!config.story,
     p:{n:c.nome,el:c.el,mhp:playerHp,hp:playerHp,mck:st.ck,ck:Math.round(st.ck*.6),atk:st.atk,def:st.def,spd:st.spd,js:unlocked(c,save.lv),gd:false},
-    e:{n:training?'Boneco de treino':en.nome,el:training?(config.el||c.el):en.el,mhp:enemyHp,hp:enemyHp,mck:es.ck,ck:training?0:Math.round(es.ck*.6),atk:training?0:es.atk,def:training?Math.max(0,Math.min(20,config.def)):es.def,spd:training?0:es.spd,js:training?[]:en.js,gd:false,lastDef:false}};
- B.log.push(`${B.e.n} bloqueia o caminho.`);
+     e:{n:en.nome,el:en.el,mhp:enemyHp,hp:enemyHp,mck:es.ck,ck:training?0:Math.round(es.ck*.6),atk:training?0:es.atk,def:training?Math.max(0,Math.min(20,config.def)):es.def,spd:training?0:es.spd,js:training?[]:en.js,gd:false,lastDef:false}};
+   B.log.push(`${B.e.n} bloqueia o caminho. ${en.historia}`);
  view='battle';render();
 }
 const say=t=>{B.log.push(t);if(B.log.length>5)B.log.shift();renderLog()};
@@ -587,7 +717,7 @@ app.addEventListener('click',ev=>{
  else if(a==='training'){view='training';render()}
  else if(a==='start-training'){
   const read=(name,min,max)=>Math.max(min,Math.min(max,Number($(`[name="${name}"]`).value)||min));
-  startBattle(0,true,{hp:read('train-hp',50,500),def:read('train-def',0,20),el:$('[name="train-el"]').value});
+  startBattle(Number($('[name="train-enemy"]').value),true,{hp:read('train-hp',50,500),def:read('train-def',0,20)});
  }
  else if(a==='story'){storyStage=0;view='story';render()}
  else if(a==='story-next-dialogue'){storyStage=1;render()}
