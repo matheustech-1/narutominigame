@@ -1,0 +1,620 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Caminho Ninja</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Staatliches&display=swap">
+<style>
+/* Layout: coluna central escura. Menu e mapa em lista; batalha em arena de duas laterais com painel de ações embaixo. Visual único e escuro de propósito. */
+:root{
+  --ink:#0d0a10; --ink2:#17121c; --panel:#1d1724; --line:#35293f;
+  --paper:#efe7d8; --mute:#a99fb5; --seal:#e0452f; --gold:#e3b04b;
+  --chakra:#47b3e6; --hp:#e0452f; --good:#6ccf8f;
+  --fogo:#f2662c; --agua:#3d9be0; --vento:#7fd6a8; --raio:#f2d03b; --terra:#c19a5b;
+  --display:"Staatliches","Impact","Arial Narrow",sans-serif;
+  --text:"Barlow","Segoe UI",system-ui,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background-color:var(--ink);color:var(--paper);font:16px/1.5 var(--text);
+  padding-block:20px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  background-image:radial-gradient(900px 520px at 85% -10%,#3b1721 0,transparent 60%),radial-gradient(700px 520px at -10% 105%,#102639 0,transparent 60%);
+  background-attachment:fixed}
+.wrap{max-width:860px;margin:0 auto}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+h1,h2,h3{font-family:var(--display);font-weight:400;letter-spacing:.05em;margin:0;text-wrap:balance}
+h2{font-size:1.9rem}
+h3{font-size:1.3rem}
+p{margin:0}
+.mute{color:var(--mute)}
+
+.btn{font-family:var(--display);font-size:1.25rem;letter-spacing:.07em;min-height:52px;padding:12px 18px;border:2px solid var(--line);background:var(--panel);border-radius:6px;cursor:pointer;transition:transform .12s,border-color .12s,background .12s}
+.btn:hover:not(:disabled){border-color:var(--paper);transform:translateY(-1px)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn.primary{background:var(--seal);border-color:var(--seal);color:#fff}
+.btn.ghost{background:transparent}
+.btn.small{min-height:40px;font-size:1rem;padding:8px 14px}
+
+.chip{display:inline-block;font-family:var(--display);letter-spacing:.08em;font-size:.9rem;line-height:1;padding:4px 8px 3px;border:1.5px solid var(--c,var(--paper));color:var(--c,var(--paper));border-radius:3px}
+.chip[data-el=fogo]{--c:var(--fogo)}.chip[data-el=agua]{--c:var(--agua)}.chip[data-el=vento]{--c:var(--vento)}.chip[data-el=raio]{--c:var(--raio)}.chip[data-el=terra]{--c:var(--terra)}
+.chip.boss{--c:var(--seal)}
+
+/* Menu */
+.hero{text-align:center;padding:20px 0 8px}
+.seal{width:64px;height:64px;margin:0 auto 12px;border-radius:50%;border:3px solid var(--seal);display:grid;place-items:center;font-family:var(--display);font-size:1.5rem;color:var(--seal);box-shadow:inset 0 0 0 4px var(--ink),inset 0 0 0 6px var(--seal)}
+.hero h1{font-size:clamp(2.6rem,9vw,4.4rem);line-height:1}
+.hero h1::after{content:"";display:block;width:min(260px,60%);height:6px;margin:10px auto 0;background:var(--seal);border-radius:3px;transform:skewX(-24deg)}
+.hero p{max-width:46ch;margin:16px auto 0;color:var(--mute)}
+.stage{display:flex;justify-content:center;align-items:flex-end;gap:clamp(8px,4vw,36px);padding:24px 0 8px}
+.hf svg{height:clamp(110px,26vw,170px);width:auto;display:block;filter:drop-shadow(0 0 14px color-mix(in srgb,currentColor 45%,transparent))}
+.hf:nth-child(2) svg{height:clamp(124px,30vw,190px)}
+.menu{display:grid;gap:10px;max-width:360px;margin:20px auto 0}
+
+/* Cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:18px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.card .cf{display:grid;place-items:center;height:140px}
+.card .cf svg{height:100%;width:auto}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.spread{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.mini{display:grid;grid-template-columns:auto 1fr auto;gap:2px 8px;font-size:.85rem;align-items:center}
+.mini .bar{height:6px}
+.num{font-variant-numeric:tabular-nums}
+.jlist{margin:0;padding:0;list-style:none;display:grid;gap:4px;font-size:.9rem}
+.jlist li{display:flex;gap:8px}
+.jlist b{font-weight:600;color:var(--paper)}
+.jlist span{color:var(--mute)}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+
+/* Barras */
+.bar{height:12px;background:#0007;border:1px solid var(--line);border-radius:3px;overflow:hidden}
+.bar i{display:block;height:100%;width:100%;transition:width .55s ease}
+.hp i{background:linear-gradient(90deg,#a82c1b,var(--hp))}
+.ck i{background:var(--chakra)}
+.xp i{background:var(--gold)}
+.bars{display:grid;gap:4px}
+.bl{display:flex;justify-content:space-between;font-size:.78rem;color:var(--mute);letter-spacing:.04em}
+
+/* Mapa */
+.hud{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:16px;display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center}
+.hud .hf svg{height:96px}
+.missions{display:grid;gap:8px;margin-top:16px}
+.mrow{display:grid;grid-template-columns:44px 1fr auto;gap:12px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.mrow.lock{opacity:.45}
+.mrow.open{border-color:var(--gold)}
+.mn{font-family:var(--display);font-size:1.6rem;text-align:center;color:var(--mute)}
+.mrow.done .mn{color:var(--good)}
+.mrow.open .mn{color:var(--gold)}
+.mtitle{font-weight:600;line-height:1.25}
+.mrow>div{min-width:0}
+
+/* Batalha */
+.arena{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:14px;border:1px solid var(--line);border-radius:8px;background:linear-gradient(180deg,#1c1526,#110c17 72%);overflow:hidden}
+.arena::after{content:"";position:absolute;left:0;right:0;bottom:0;height:34px;background:linear-gradient(180deg,transparent,#0006);pointer-events:none}
+.side{position:relative;min-width:0;display:flex;flex-direction:column;gap:8px}
+.tag{display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap}
+.tag b{font-family:var(--display);font-weight:400;font-size:1.15rem;letter-spacing:.05em}
+.fig{height:clamp(120px,34vw,210px);display:flex;align-items:flex-end;justify-content:center;margin-top:4px}
+.fig svg{height:100%;width:auto;max-width:100%;filter:drop-shadow(0 0 12px color-mix(in srgb,currentColor 40%,transparent))}
+.foe .fig svg{transform:scaleX(-1)}
+.foe.boss .fig svg{transform:scaleX(-1) scale(1.1);transform-origin:bottom center}
+.fig.lungeR{animation:lungeR .45s}.fig.lungeL{animation:lungeL .45s}.fig.hit{animation:hit .4s}
+.arena.shake{animation:shake .35s}
+.flash{position:absolute;inset:0;pointer-events:none;opacity:0;mix-blend-mode:screen}
+.flash.on{animation:flash .55s}
+.banner{position:absolute;left:0;right:0;top:46%;text-align:center;font-family:var(--display);font-size:clamp(1.4rem,5vw,2.1rem);letter-spacing:.1em;opacity:0;pointer-events:none;text-shadow:0 2px 0 #000,0 0 18px #000}
+.banner.on{animation:ban 1s}
+.dmg{position:absolute;left:50%;top:34%;transform:translateX(-50%);font-family:var(--display);font-size:2.2rem;pointer-events:none;text-shadow:0 2px 0 #000;animation:rise 1.05s forwards;color:var(--paper)}
+.dmg.adv{color:var(--gold);font-size:2.7rem}
+.dmg.res{color:var(--mute)}
+.dmg.heal{color:var(--good)}
+.log{min-height:7.2em;margin:12px 0;padding:10px 14px;border-left:3px solid var(--seal);background:var(--panel);border-radius:0 6px 6px 0;font-size:.95rem;display:flex;flex-direction:column;justify-content:flex-end;gap:2px}
+.log p:last-child{color:var(--paper)}
+.log p{color:var(--mute)}
+.actions{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.actions.busy{opacity:.45;pointer-events:none}
+.actions .btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:60px}
+.actions .btn small{font-family:var(--text);font-size:.78rem;letter-spacing:0;color:var(--mute)}
+.actions.jut{grid-template-columns:1fr}
+.jbtn{display:grid!important;grid-template-columns:1fr auto;align-items:center!important;text-align:left;gap:2px 12px!important}
+.jbtn .jd{grid-column:1;font-family:var(--text);font-size:.82rem;letter-spacing:0;color:var(--mute)}
+.jbtn .jc{grid-row:1/3;grid-column:2;text-align:right;font-size:1rem}
+.adv{color:var(--gold)}
+.res{color:var(--mute)}
+
+/* Resultado / overlay */
+.result{max-width:560px;margin:24px auto 0;text-align:center;display:grid;gap:16px;justify-items:center}
+.result h2{font-size:clamp(2.4rem,9vw,3.6rem);line-height:1}
+.win h2{color:var(--gold)}.lose h2{color:var(--seal)}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px 16px;width:100%;text-align:left;display:grid;gap:8px}
+.ov{position:fixed;inset:0;background:#000b;display:grid;place-items:center;padding:16px;z-index:20;overflow-y:auto}
+.ov .box{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:20px;max-width:560px;width:100%;display:grid;gap:12px}
+.ov ul{margin:0;padding-left:1.2em;display:grid;gap:4px}
+.cycle{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.cycle span.ar{color:var(--mute)}
+
+@keyframes lungeR{40%{transform:translateX(42px)}}
+@keyframes lungeL{40%{transform:translateX(-42px)}}
+@keyframes hit{0%,100%{transform:translateX(0);filter:none}25%{transform:translateX(-7px);filter:brightness(2.4)}50%{transform:translateX(7px)}75%{transform:translateX(-3px)}}
+@keyframes shake{0%,100%{transform:translate(0)}20%{transform:translate(-4px,2px)}40%{transform:translate(4px,-2px)}60%{transform:translate(-3px,-1px)}80%{transform:translate(2px,1px)}}
+@keyframes flash{0%{opacity:0}20%{opacity:.8}100%{opacity:0}}
+@keyframes ban{0%{opacity:0;transform:translateY(-8px)}15%,70%{opacity:1;transform:none}100%{opacity:0}}
+@keyframes rise{0%{opacity:0;transform:translate(-50%,10px) scale(.7)}15%{opacity:1;transform:translate(-50%,0) scale(1.15)}100%{opacity:0;transform:translate(-50%,-54px)}}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+@media (max-width:480px){.hud{grid-template-columns:1fr}.hud .hf{justify-self:center}.mrow{grid-template-columns:36px 1fr}.mrow .mact{grid-column:1/3}.mrow .mact .btn{width:100%}}
+</style>
+
+<div class="wrap" id="app"></div>
+
+<script id="core">
+/* ===== DADOS E REGRAS (puro, sem DOM) ===== */
+const G={hp:14,ck:2,atk:2,def:1.2,spd:1};
+const ELS={fogo:{n:'Fogo',beats:'vento'},vento:{n:'Vento',beats:'raio'},raio:{n:'Raio',beats:'terra'},terra:{n:'Terra',beats:'agua'},agua:{n:'Água',beats:'fogo'}};
+const mult=(a,d)=>!a||!d?1:ELS[a].beats===d?1.5:ELS[d].beats===a?0.75:1;
+
+const CLASSES={
+ fogo:{id:'fogo',nome:'Kazan',cla:'Clã Brasa',el:'fogo',look:'spiky',
+  resumo:'Ataque alto e defesa baixa. Termina as lutas rápido.',
+  base:{hp:95,ck:18,atk:12,def:4,spd:6},
+  jutsus:[
+   {id:'f1',n:'Sopro de Brasa',p:1.6,c:4,lv:1,d:'Sopro de fogo que queima o alvo à frente.'},
+   {id:'f2',n:'Dragão de Cinzas',p:2.2,c:6,lv:3,d:'Um dragão de chamas varre o campo de batalha.'},
+   {id:'f3',n:'Labareda Carmesim',p:2.7,c:8,lv:5,d:'Labaredas concentradas queimam tudo no caminho.'},
+   {id:'f4',n:'Inferno da Fênix',p:3.4,c:12,lv:8,d:'Uma fênix de fogo desce do céu e engole o alvo.'}]},
+ agua:{id:'agua',nome:'Suiren',cla:'Clã Maré',el:'agua',look:'bun',
+  resumo:'Equilibrada e resistente. Os golpes mais fortes devolvem vida.',
+  base:{hp:105,ck:22,atk:11,def:5,spd:5},
+  jutsus:[
+   {id:'a1',n:'Jato de Maré',p:1.5,c:4,lv:1,d:'Jato de água em alta pressão contra o alvo.'},
+   {id:'a2',n:'Redemoinho Gélido',p:2.0,c:6,lv:3,drain:0.3,d:'Água gelada gira em volta do alvo e cura você um pouco.'},
+   {id:'a3',n:'Dragão das Águas',p:2.8,c:8,lv:5,d:'Um dragão feito de água investe contra o inimigo.'},
+   {id:'a4',n:'Tsunami Silencioso',p:3.5,c:12,lv:8,drain:0.35,d:'Uma onda gigante esmaga o alvo e renova suas forças.'}]},
+ raio:{id:'raio',nome:'Raizo',cla:'Clã Trovão',el:'raio',look:'hood',
+  resumo:'Muito veloz. Os golpes de raio ignoram parte da defesa.',
+  base:{hp:90,ck:18,atk:11,def:4,spd:9},
+  jutsus:[
+   {id:'r1',n:'Faísca Cortante',p:1.5,c:3,lv:1,pierce:1,d:'Faísca veloz que atravessa a guarda do alvo.'},
+   {id:'r2',n:'Lança de Trovão',p:2.1,c:6,lv:3,pierce:1,d:'Uma lança de raio perfura a defesa do inimigo.'},
+   {id:'r3',n:'Corrente Violeta',p:2.6,c:8,lv:5,d:'Uma corrente elétrica violeta envolve e fulmina o alvo.'},
+   {id:'r4',n:'Tempestade Estelar',p:3.3,c:12,lv:8,pierce:1,d:'Uma tempestade de raios cai do céu e ignora a defesa.'}]}
+ ,vento:{id:'vento',nome:'Hayate',cla:'Clã Vendaval',el:'vento',look:'spiky',
+  resumo:'Ágil e técnico. Equilibra velocidade com ataques consistentes.',
+  base:{hp:98,ck:20,atk:10,def:5,spd:8},
+  jutsus:[
+   {id:'v1',n:'Lâmina de Ar',p:1.5,c:4,lv:1,d:'Uma lâmina de vento corta o alvo.'},
+   {id:'v2',n:'Passo do Vendaval',p:2.0,c:6,lv:3,d:'Um avanço veloz atinge o inimigo.'},
+   {id:'v3',n:'Tornado Ascendente',p:2.7,c:8,lv:5,d:'Um tornado ergue e golpeia o alvo.'},
+   {id:'v4',n:'Ciclone Celeste',p:3.3,c:12,lv:8,d:'Um ciclone envolve todo o campo.'}]},
+ terra:{id:'terra',nome:'Daichi',cla:'Clã Rocha',el:'terra',look:'hat',
+  resumo:'Resistente e firme. Aguenta golpes enquanto prepara o contra-ataque.',
+  base:{hp:115,ck:18,atk:10,def:7,spd:4},
+  jutsus:[
+   {id:'t1',n:'Punho de Pedra',p:1.5,c:4,lv:1,d:'Um golpe sólido atinge o alvo.'},
+   {id:'t2',n:'Muralha de Rocha',p:2.0,c:6,lv:3,d:'Pedras avançam contra o inimigo.'},
+   {id:'t3',n:'Tremor Profundo',p:2.7,c:8,lv:5,d:'O chão treme sob os pés do adversário.'},
+  {id:'t4',n:'Colosso de Granito',p:3.3,c:12,lv:8,d:'Um colosso de pedra esmaga o alvo.'}]},
+ sombra:{id:'sombra',nome:'Yoru',cla:'Clã Eclipse',el:'raio',look:'horns',
+  resumo:'Especialista em pressão. Golpes precisos atravessam a guarda.',
+  base:{hp:92,ck:21,atk:12,def:3,spd:7},
+  jutsus:[
+  {id:'s1',n:'Estocada Sombria',p:1.5,c:4,lv:1,pierce:1,d:'Um golpe preciso encontra uma abertura na guarda.'},
+  {id:'s2',n:'Passo da Penumbra',p:2.0,c:6,lv:3,d:'Yoru surge ao lado do alvo e ataca.'},
+  {id:'s3',n:'Lança do Eclipse',p:2.7,c:8,lv:5,pierce:1,d:'Uma lança escura perfura a defesa.'},
+  {id:'s4',n:'Noite Sem Lua',p:3.3,c:12,lv:8,d:'Uma onda de energia cobre a arena.'}]}
+};
+
+const ENEMIES=[
+ {nome:'Bandido da Estrada',el:'terra',look:'hood',js:[{n:'Pedrada Rápida',p:1.4,c:3}]},
+ {nome:'Lobo Sombrio',el:'vento',look:'wolf',js:[{n:'Uivo Cortante',p:1.5,c:3}]},
+ {nome:'Renegado da Névoa',el:'agua',look:'hood',js:[{n:'Lâmina de Água',p:1.7,c:4}]},
+ {nome:'Mestre das Chamas Negras',el:'fogo',look:'spiky',js:[{n:'Labareda Negra',p:1.9,c:5}]},
+ {nome:'Guardião do Templo',el:'terra',look:'hat',js:[{n:'Punho de Rocha',p:2.0,c:5}]},
+ {nome:'Espadachim do Trovão',el:'raio',look:'hood',js:[{n:'Corte Relâmpago',p:2.0,c:5,pierce:1}]},
+ {nome:'Sacerdotisa do Vento',el:'vento',look:'bun',js:[{n:'Lâmina de Ar',p:1.8,c:4},{n:'Tornado de Papel',p:2.3,c:6}]},
+ {nome:'Caçador de Selos',el:'agua',look:'hat',js:[{n:'Selo Afogador',p:2.4,c:6}]},
+ {nome:'Comandante Kuroi',el:'raio',look:'hood',js:[{n:'Trovão Negro',p:2.5,c:7,pierce:1}]},
+ {nome:'Yami, Senhor das Sombras',el:'terra',look:'horns',boss:1,js:[{n:'Garras das Trevas',p:2.0,c:4,neutral:1},{n:'Abismo Sombrio',p:2.6,c:8,neutral:1},{n:'Eclipse Final',p:3.2,c:12,pierce:1,neutral:1}]}
+];
+const SKINS=[
+  {id:'default',n:'Traje do clã',look:null},
+  {id:'spiky',n:'Cabelo em espinhos',look:'spiky'},
+  {id:'hood',n:'Capuz de viagem',look:'hood'},
+  {id:'hat',n:'Chapéu de missão',look:'hat'}
+];
+
+const need=l=>40*l;
+const rank=l=>l<4?'Genin':l<7?'Chunin':'Jounin';
+const reward=i=>40+25*(i+1);
+const stats=(c,l)=>({hp:Math.round(c.base.hp+G.hp*(l-1)),ck:Math.round(c.base.ck+G.ck*(l-1)),atk:Math.round(c.base.atk+G.atk*(l-1)),def:Math.round((c.base.def+G.def*(l-1))*10)/10,spd:Math.round(c.base.spd+G.spd*(l-1))});
+const unlocked=(c,l)=>c.jutsus.filter(j=>j.lv<=l);
+function enemyStats(i){const k=i+1,b=ENEMIES[i].boss;
+ return{hp:Math.round((50+k*15)*(b?1.35:1)),ck:14+2*k+(b?8:0),atk:Math.round((8+k*1.25)*(b?1.15:1)*10)/10,def:Math.round((3+k*0.8)*10)/10,spd:5+k}}
+function calc(a,power,m,t,pierce){
+ let b=Math.max(1,a.atk*power-(pierce?0:t.def*0.5));
+ b*=m*(0.9+Math.random()*0.2);
+ if(t.gd)b*=0.5;
+ return Math.max(1,Math.round(b));
+}
+function aiPick(e){
+ if(e.hp/e.mhp<0.25&&!e.lastDef)return{t:'def'};
+ const ok=e.js.filter(j=>j.c<=e.ck).sort((a,b)=>b.p-a.p);
+ if(ok.length&&Math.random()<0.8)return{t:'jutsu',j:ok[0]};
+ return{t:'atk'};
+}
+</script>
+
+<script id="data">
+/* ===== CAMADA DE DADOS (Dattebayo, cache e modo offline) ===== */
+const DattebayoData=(()=>{
+ const CACHE_KEY='caminho-ninja-dattebayo-v1',CACHE_TTL=24*60*60*1000;
+ const BASES=['https://dattebayo-api.onrender.com','https://api-dattebayo.vercel.app'];
+ const templates=ENEMIES.map(enemy=>({...enemy,js:enemy.js.map(j=>({...j}))}));
+ const elements=['fogo','agua','vento','raio','terra'];
+ const fallback=[
+  {name:'Kazan',clan:'Clã Brasa',village:'Desconhecido'},
+  {name:'Suiren',clan:'Clã Maré',village:'Desconhecido'},
+  {name:'Raizo',clan:'Clã Trovão',village:'Desconhecido'},
+  ...ENEMIES.slice(0,7).map(enemy=>({name:enemy.nome,clan:'Desconhecido',village:'Desconhecido'}))
+ ];
+ let state='loading',profiles=fallback,source='local';
+ const readCache=()=>{
+  try{
+   const saved=JSON.parse(localStorage.getItem(CACHE_KEY));
+   return saved&&Date.now()-saved.savedAt<CACHE_TTL&&Array.isArray(saved.profiles)?saved.profiles:null;
+  }catch{return null}
+ };
+ const writeCache=data=>{try{localStorage.setItem(CACHE_KEY,JSON.stringify({savedAt:Date.now(),profiles:data}))}catch{}};
+ const field=value=>{
+  if(typeof value==='string'&&value.trim())return value.trim();
+  if(value&&typeof value==='object'&&!Array.isArray(value)&&typeof value.name==='string'&&value.name.trim())return value.name.trim();
+  return 'Desconhecido';
+ };
+ const normalize=rows=>rows.map(item=>({
+  id:field(item?.id),name:field(item?.name),clan:field(item?.clan),village:field(item?.village)
+ })).filter(item=>item.name!=='Desconhecido').slice(0,10);
+ const elementFor=profile=>{
+  const key=String(profile.id!=='Desconhecido'?profile.id:`${profile.name}:${profile.clan}`);
+  let hash=0;
+  for(const char of key)hash=(hash*31+char.charCodeAt(0))>>>0;
+  return elements[hash%elements.length];
+ };
+ const missionsFor=rows=>rows.slice(0,10).map((profile,index)=>{
+  const template=templates[index],el=elementFor(profile);
+  return{
+   ...template,nome:profile.name,el,clan:profile.clan,village:profile.village,
+   js:template.js.map(j=>({...j}))
+  };
+ });
+ const applyMissions=()=>ENEMIES.splice(0,ENEMIES.length,...missionsFor(profiles));
+ async function request(base){
+  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),8000);
+  try{
+   const response=await fetch(`${base}/characters?page=1&limit=10`,{signal:controller.signal});
+   if(!response.ok)throw new Error(`HTTP ${response.status}`);
+   const payload=await response.json(),rows=Array.isArray(payload)?payload:payload?.characters;
+   if(!Array.isArray(rows)||!rows.length)throw new Error('Resposta sem personagens');
+   console.info('[Caminho Ninja] Campos Dattebayo:',Object.keys(rows[0]));
+   const data=normalize(rows);
+   if(!data.length)throw new Error('Resposta sem nomes utilizáveis');
+   return data;
+  }finally{clearTimeout(timer)}
+ }
+ async function load(){
+  const cached=readCache();
+  const cachedProfiles=cached?normalize(cached):[];
+  if(cachedProfiles.length){profiles=cachedProfiles;source='cache';state='ready';applyMissions();return profiles}
+  for(let i=0;i<BASES.length;i++){
+   try{
+    profiles=await request(BASES[i]);source=i===0?'principal':'reserva';state='ready';writeCache(profiles);applyMissions();return profiles;
+   }catch(error){console.warn(`[Caminho Ninja] API ${i===0?'principal':'reserva'} indisponível:`,error)}
+  }
+  profiles=fallback;source='local';state='offline';applyMissions();return profiles;
+ }
+ const status=()=>state==='loading'?'Convocando ninjas...':state==='offline'?'Modo offline · 10 ninjas locais':`Arquivo ${source} · ${profiles.length} ninjas`;
+ return{load,status,get profiles(){return profiles},get state(){return state}};
+})();
+</script>
+
+<script id="ui">
+/* ===== INTERFACE ===== */
+(function(){
+const app=document.getElementById('app');
+const KEY='caminho-ninja-v1';
+let mem=null;
+const load=()=>{try{const r=localStorage.getItem(KEY);return r?JSON.parse(r):mem}catch(e){return mem}};
+const store=o=>{mem=o;try{localStorage.setItem(KEY,JSON.stringify(o))}catch(e){}};
+const wipe=()=>{mem=null;try{localStorage.removeItem(KEY)}catch(e){}};
+const REDUCE=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+const sleep=ms=>new Promise(r=>setTimeout(r,REDUCE?ms*0.4:ms));
+const $=s=>document.querySelector(s);
+const chip=el=>`<span class="chip" data-el="${el}">${ELS[el].n}</span>`;
+const pct=(a,b)=>Math.max(0,Math.min(100,Math.round(a/b*100)));
+
+let save=load(),view='menu',B=null,R=null,how=false,confirmNew=false,sel=null,confirmTimer=null,storyStage=0;
+
+/* ---- Arte (SVG, cor do elemento via currentColor) ---- */
+function fig(look){
+ const K='#1a1421',S='stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"';
+ if(look==='wolf')return `<svg viewBox="0 0 160 130" aria-hidden="true"><g fill="${K}" ${S}><path d="M28 80C6 72 4 42 20 30c-2 22 12 30 24 38z"/><ellipse cx="70" cy="84" rx="42" ry="24"/><rect x="36" y="98" width="10" height="26" rx="3"/><rect x="52" y="100" width="10" height="24" rx="3"/><rect x="84" y="100" width="10" height="24" rx="3"/><rect x="100" y="98" width="10" height="26" rx="3"/><path d="M106 62l26-12 22 24-20 14-26 2z"/><path d="M112 60l4-24 12 16z"/><path d="M124 52l10-22 6 26z"/></g><circle cx="134" cy="68" r="3.5" fill="currentColor"/></svg>`;
+ const head={
+  spiky:`<path d="M41 30L34 8l15 11 6-17 8 17 12-15 2 18 10-10-5 21z" fill="${K}" ${S}/>`,
+  hood:`<path d="M38 42Q38 8 60 8q22 0 22 34l-8-8Q60 24 46 34z" fill="${K}" ${S}/>`,
+  hat:`<ellipse cx="60" cy="24" rx="36" ry="9" fill="${K}" ${S}/><path d="M38 24Q60 -6 82 24z" fill="${K}" ${S}/>`,
+  bun:`<circle cx="60" cy="10" r="9" fill="${K}" ${S}/><path d="M41 34Q60 8 79 34z" fill="${K}" ${S}/>`,
+  horns:`<path d="M38 42Q38 8 60 8q22 0 22 34l-8-8Q60 24 46 34z" fill="${K}" ${S}/><path d="M44 16L32 -8l22 12zM76 16L88 -8 66 4z" fill="${K}" ${S}/>`
+ }[look]||'';
+ const band=(look==='spiky'||look==='bun')?`<rect x="41" y="30" width="38" height="8" fill="currentColor"/><rect x="54" y="30" width="12" height="8" fill="#e8e1d0"/>`:'';
+ const cape=look==='horns'?`<path d="M34 58L6 160l54-22 54 22L86 58z" fill="currentColor" opacity=".22"/>`:'';
+ return `<svg viewBox="0 -12 120 182" aria-hidden="true">${cape}<g fill="${K}" ${S}><path d="M42 104l-4 58h18l4-40 4 40h18l-4-58z"/><path d="M36 64L18 98l10 6 20-28z"/><path d="M38 60q22-10 44 0l4 48H34z"/><path d="M84 64l22 18-6 10-26-14z"/><circle cx="60" cy="38" r="19"/></g><path d="M106 84l8-44" stroke="#cfd3da" stroke-width="3.5" stroke-linecap="round"/><path d="M42 58q18 12 36 0l10 20-12-4-6 14-6-16-8 14-4-14-10 6z" fill="currentColor" opacity=".9"/>${head}${band}<path d="M50 42h8M64 42h8" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>`;
+}
+const figBox=(look,el,cls='')=>`<div class="fig ${cls}" style="color:var(--${el})">${fig(look)}</div>`;
+
+/* ---- Telas ---- */
+function menuView(){
+ const has=!!save;
+ return `<div class="hero"><div class="seal" aria-hidden="true">CN</div><h1>Caminho Ninja</h1>
+ <p>Batalha ninja por turnos. Escolha seu clã, vença 10 missões e derrote o Senhor das Sombras.</p>
+ <p class="mute" id="data-status" role="status" aria-live="polite" style="font-size:.82rem;margin-top:8px">${DattebayoData.status()}</p></div>
+ <div class="stage">${['fogo','agua','raio'].map(k=>`<div class="hf" style="color:var(--${k})">${fig(CLASSES[k].look)}</div>`).join('')}</div>
+ <div class="menu">
+  <button class="btn primary" data-act="new">${confirmNew?'Confirmar: apagar progresso':'Jogar'}</button>
+  <button class="btn" data-act="cont" ${has?'':'disabled'}>${has?`Continuar · ${CLASSES[save.cls].nome} Nv ${save.lv}`:'Continuar'}</button>
+  <button class="btn ghost" data-act="how">Como jogar</button>
+ </div>`;
+}
+function classView(){
+ return `<div class="top"><h2>Escolha seu clã</h2><button class="btn ghost small" data-act="menu">Voltar</button></div>
+ <p class="mute">Cada clã tem um elemento, atributos próprios e 4 jutsus que se desbloqueiam nos níveis 1, 3, 5 e 8.</p>
+ <div class="row" style="margin-top:14px"><label>Prévia visual <select name="skin-preview">${SKINS.map(s=>`<option value="${s.id}" ${sel===s.id?'selected':''}>${s.n}</option>`).join('')}</select></label></div>
+ <div class="grid">${Object.values(CLASSES).map(c=>{
+  const s=stats(c,1);
+  return `<div class="card"><div class="cf" style="color:var(--${c.el})">${fig(SKINS.find(s=>s.id===sel)?.look||c.look)}</div>
+  <div class="spread"><h3>${c.nome}</h3>${chip(c.el)}</div>
+  <div class="mute" style="font-size:.9rem">${c.cla}. ${c.resumo}</div>
+  <div class="mini num"><span>HP</span><div class="bar hp"><i style="width:${pct(s.hp,130)}%"></i></div><span>${s.hp}</span>
+   <span>Ataque</span><div class="bar xp"><i style="width:${pct(s.atk,16)}%"></i></div><span>${s.atk}</span>
+   <span>Defesa</span><div class="bar xp"><i style="width:${pct(s.def,8)}%"></i></div><span>${s.def}</span>
+   <span>Veloc.</span><div class="bar ck"><i style="width:${pct(s.spd,12)}%"></i></div><span>${s.spd}</span></div>
+  <ul class="jlist">${c.jutsus.map(j=>`<li><b>${j.n}</b><span>Nv ${j.lv}</span></li>`).join('')}</ul>
+  <button class="btn primary" data-act="pick" data-c="${c.id}" style="margin-top:auto">Escolher ${c.nome}</button></div>`}).join('')}</div>`;
+}
+function mapView(){
+ const c=CLASSES[save.cls],s=stats(c,save.lv),skin=SKINS.find(x=>x.id===(save.skin||'default'))||SKINS[0];
+ return `<div class="top"><h2>Mapa de missões</h2><div class="row"><button class="btn ghost small" data-act="profile">Meu ninja</button><button class="btn ghost small" data-act="training">Treino</button><button class="btn ghost small" data-act="story">História</button><button class="btn ghost small" data-act="how">Como jogar</button><button class="btn ghost small" data-act="menu">Menu</button></div></div>
+ <div class="hud"><div class="hf" style="color:var(--${c.el})">${fig(skin.look||c.look)}</div>
+  <div class="bars"><div class="spread"><h3>${c.nome} · ${rank(save.lv)}</h3>${chip(c.el)}</div>
+  <div class="bl"><span>Nível ${save.lv}</span><span class="num">${save.xp} / ${need(save.lv)} XP</span></div>
+  <div class="mute num" style="font-size:.82rem">XP gastável: ${save.xpGastavel||0}</div>
+   <div class="bar xp"><i style="width:${pct(save.xp,need(save.lv))}%"></i></div>
+   <div class="mute num" style="font-size:.85rem">HP ${s.hp} · Chakra ${s.ck} · Ataque ${s.atk} · Defesa ${s.def} · Veloc. ${s.spd}</div>
+   <div class="mute" style="font-size:.85rem">Jutsus: ${unlocked(c,save.lv).map(j=>j.n).join(', ')}</div></div></div>
+ <div class="missions">${ENEMIES.map((e,i)=>{
+  const st=i<save.cleared?'done':i===save.cleared?'open':'lock';
+  return `<div class="mrow ${st}"><div class="mn">${i+1}</div>
+  <div><div class="mtitle">${e.nome}</div><div class="mute" style="font-size:.82rem">${e.clan||'Clã desconhecido'} · ${e.village||'Vila desconhecida'}</div><div class="row" style="margin-top:4px">${chip(e.el)}${e.boss?'<span class="chip boss">Chefe</span>':''}<span class="mute num" style="font-size:.85rem">${st==='done'?'Concluída · XP reduzido':'+'+reward(i)+' XP'}</span></div></div>
+   <div class="mact"><button class="btn small ${st==='open'?'primary':''}" data-act="fight" data-i="${i}" ${st==='lock'?'disabled':''}>${st==='done'?'Repetir':st==='open'?'Lutar':'Bloqueada'}</button></div></div>`}).join('')}</div>`;
+}
+function profileView(){
+ const c=CLASSES[save.cls],owned=SKINS.slice(0,Math.min(SKINS.length,1+Math.floor(save.cleared/2)));
+ return `<div class="top"><h2>Meu ninja</h2><button class="btn ghost small" data-act="map">Voltar ao mapa</button></div>
+ <div class="hud"><div class="hf" style="color:var(--${c.el})">${fig((SKINS.find(s=>s.id===save.skin)?.look)||c.look)}</div><div><h3>${c.nome}</h3><p class="mute">${c.cla} · ${rank(save.lv)} · Nível ${save.lv}</p><p class="mute" style="margin-top:8px">A aparência não altera atributos ou regras de batalha.</p></div></div>
+ <div class="grid">${owned.map(s=>`<div class="card"><div class="cf" style="color:var(--${c.el})">${fig(s.look||c.look)}</div><div class="spread"><h3>${s.n}</h3>${save.skin===s.id?'<span class="adv">Equipado</span>':''}</div><button class="btn ${save.skin===s.id?'':'primary'}" data-act="skin" data-skin="${s.id}" ${save.skin===s.id?'disabled':''}>${save.skin===s.id?'Em uso':'Equipar'}</button></div>`).join('')}</div>`;
+}
+function trainingView(){
+ return `<div class="top"><h2>Arena de treinamento</h2><button class="btn ghost small" data-act="map">Voltar ao mapa</button></div>
+ <p class="mute">Ajuste o alvo para comparar dano. O treino não concede XP e não altera o progresso da campanha.</p>
+ <div class="panel" style="margin-top:16px"><label>HP do alvo <input name="train-hp" type="number" min="50" max="500" value="180"></label>
+ <label>Defesa do alvo <input name="train-def" type="number" min="0" max="20" value="8"></label>
+ <label>Elemento do alvo <select name="train-el">${Object.entries(ELS).map(([id,e])=>`<option value="${id}">${e.n}</option>`).join('')}</select></label>
+ <button class="btn primary" data-act="start-training">Iniciar treino</button></div>`;
+}
+function storyView(){
+ const mi=Math.min(save.storyMission||0,ENEMIES.length-1),chapter=mi<3?0:mi<7?1:2,chapters=['Ecos da Folha','Sombras da Névoa','O último selo'];
+ const speaker=storyStage?'Líder da equipe':chapter===0?'Líder da Folha':chapter===1?'Mensageira da Névoa':'Guardião do templo';
+ const dialogue=storyStage?`A missão é ${ENEMIES[mi].nome}. Mantenha a atenção e volte com o selo.`:chapter===0?'Alguém está reunindo os selos antigos. Investigue a estrada e descubra quem está por trás disso.':chapter===1?'Os renegados também procuram o artefato. Atravesse a névoa antes que encontrem o próximo selo.':'O último selo está no templo. O Senhor das Sombras está esperando por você.';
+ return `<div class="top"><h2>Modo história</h2><button class="btn ghost small" data-act="map">Voltar ao mapa</button></div>
+ <div class="panel"><span class="chip">Capítulo ${chapter+1}</span><h3>${chapters[chapter]}</h3>
+ <p><b>${speaker}</b></p><p>${dialogue}</p><p class="mute">Missão ${mi+1} de ${ENEMIES.length}: ${ENEMIES[mi].nome}</p>
+ <div class="row">${storyStage?`<button class="btn primary" data-act="story-fight" data-i="${mi}">Lutar</button>`:`<button class="btn primary" data-act="story-next-dialogue">Continuar</button>`}<button class="btn" data-act="story-skip" data-i="${mi}">Pular diálogo</button></div></div>`;
+}
+function battleView(){
+ const p=B.p,e=B.e;
+ const side=(f,cls,look,boss)=>`<div class="side ${cls} ${boss?'boss':''}">
+  <div class="tag"><b>${f.n}</b>${chip(f.el)}</div>
+  <div class="bars"><div class="bl"><span>HP</span><span class="num" data-t="hp-${cls}"></span></div><div class="bar hp"><i data-b="hp-${cls}"></i></div>
+  <div class="bl"><span>Chakra</span><span class="num" data-t="ck-${cls}"></span></div><div class="bar ck"><i data-b="ck-${cls}"></i></div></div>
+  ${figBox(cls==='you'?(SKINS.find(s=>s.id===save.skin)?.look||CLASSES[save.cls].look):look,f.el)}</div>`;
+ return `<div class="top"><h3>${B.training?'Arena de treino':`Missão ${B.mi+1}${ENEMIES[B.mi].boss?' · Chefe':''}`} · Rodada <span id="rd" class="num">1</span></h3><button class="btn ghost small" data-act="flee">${B.training?'Encerrar treino':'Fugir'}</button></div>
+ <div class="arena" id="arena">${side(p,'you',CLASSES[save.cls].look)}${side(e,'foe',B.training?'hat':ENEMIES[B.mi].look,ENEMIES[B.mi].boss)}
+  <div class="flash" id="flash"></div><div class="banner" id="banner"></div></div>
+ <div class="log" id="log" aria-live="polite"></div>
+ <div class="actions" id="actions"></div>`;
+}
+function resultView(){
+ const r=R,c=CLASSES[save.cls];
+ const next=r.win&&B.mi+1<ENEMIES.length;
+ return `<div class="result ${r.win?'win':'lose'}"><h2>${r.win?'Vitória':'Derrota'}</h2>
+  <p class="mute">${r.win?`${ENEMIES[B.mi].nome} foi derrotado.`:`${ENEMIES[B.mi].nome} venceu desta vez. Treine em missões anteriores e tente de novo.`}</p>
+  <div class="panel"><div class="spread"><b>+${r.xp} XP</b><span class="mute">Nível ${save.lv} · ${rank(save.lv)}</span></div>
+   <div class="bar xp"><i style="width:${pct(save.xp,need(save.lv))}%"></i></div>
+   ${save.lv>r.before.lv?`<div class="adv">Subiu do nível ${r.before.lv} para o ${save.lv}. Atributos aumentaram.</div>`:''}
+   ${r.rankUp?`<div class="adv">Promoção: você agora é ${rank(save.lv)}.</div>`:''}
+   ${r.newJ.map(j=>`<div><b class="adv">Novo jutsu: ${j.n}</b><div class="mute" style="font-size:.9rem">${j.d}</div></div>`).join('')}
+   ${r.final?`<div class="adv">Campanha concluída. ${c.nome} derrotou o Senhor das Sombras.</div>`:''}</div>
+  <div class="row" style="justify-content:center">${r.story&&r.win?`<button class="btn primary" data-act="story">Continuar história</button>`:''}${next?`<button class="btn primary" data-act="fight" data-i="${B.mi+1}">Próxima missão</button>`:''}
+  ${!r.win?`<button class="btn primary" data-act="${r.story?'story-retry':'fight'}" data-i="${B.mi}">Tentar de novo</button>`:''}
+   <button class="btn" data-act="map">Mapa</button></div></div>`;
+}
+function howView(){
+ const order=['fogo','vento','raio','terra','agua'];
+ return `<div class="ov"><div class="box"><h2>Como jogar</h2>
+ <ul><li><b>Ataque:</b> sem custo, dano básico.</li>
+ <li><b>Jutsu:</b> gasta chakra e causa mais dano. Mostra se o elemento tem vantagem.</li>
+ <li><b>Defender:</b> corta o dano recebido na rodada pela metade e recupera 3 de chakra.</li>
+ <li><b>Item:</b> uma pílula por batalha, recupera 40% do HP.</li>
+ <li>O chakra regenera +2 por rodada. Quem tem mais velocidade age primeiro.</li>
+ <li>Vencer dá XP. Em missões já concluídas o XP é menor. Em derrota você ganha um pouco de XP.</li></ul>
+ <div><b>Ciclo de elementos</b> (vantagem x1.5, desvantagem x0.75)</div>
+ <div class="cycle">${order.concat('fogo').map(chip).join('<span class="ar">vence</span>')}</div>
+ <button class="btn primary" data-act="closehow">Entendi</button></div></div>`;
+}
+
+function render(){
+ let h='';
+ if(view==='menu')h=menuView();else if(view==='class')h=classView();else if(view==='map')h=mapView();
+ else if(view==='battle')h=battleView();else if(view==='result')h=resultView();
+ else if(view==='profile')h=profileView();else if(view==='training')h=trainingView();else if(view==='story')h=storyView();
+ app.innerHTML=h+(how?howView():'');
+ if(view==='battle'){upd();showActions('main');renderLog()}
+ window.scrollTo({top:0});
+}
+
+/* ---- Batalha ---- */
+function startBattle(i,training=false,config={}){
+  const c=CLASSES[save.cls],st=stats(c,save.lv),en=ENEMIES[i],es=enemyStats(i);
+  const playerHp=st.hp,enemyHp=training?Math.max(50,Math.min(500,config.hp)):es.hp;
+ B={mi:i,busy:false,over:false,item:1,round:1,log:[],training,story:!!config.story,
+    p:{n:c.nome,el:c.el,mhp:playerHp,hp:playerHp,mck:st.ck,ck:Math.round(st.ck*.6),atk:st.atk,def:st.def,spd:st.spd,js:unlocked(c,save.lv),gd:false},
+    e:{n:training?'Boneco de treino':en.nome,el:training?(config.el||c.el):en.el,mhp:enemyHp,hp:enemyHp,mck:es.ck,ck:training?0:Math.round(es.ck*.6),atk:training?0:es.atk,def:training?Math.max(0,Math.min(20,config.def)):es.def,spd:training?0:es.spd,js:training?[]:en.js,gd:false,lastDef:false}};
+ B.log.push(`${B.e.n} bloqueia o caminho.`);
+ view='battle';render();
+}
+const say=t=>{B.log.push(t);if(B.log.length>5)B.log.shift();renderLog()};
+function renderLog(){const l=$('#log');if(l)l.innerHTML=B.log.map(t=>`<p>${t}</p>`).join('')}
+function upd(){
+ [['you',B.p],['foe',B.e]].forEach(([s,f])=>{
+  const set=(k,v,m)=>{const b=$(`[data-b="${k}-${s}"]`),t=$(`[data-t="${k}-${s}"]`);if(b)b.style.width=pct(v,m)+'%';if(t)t.textContent=Math.max(0,Math.round(v))+' / '+m};
+  set('hp',f.hp,f.mhp);set('ck',f.ck,f.mck)});
+ const r=$('#rd');if(r)r.textContent=B.round;
+}
+function pulse(n,c,ms){if(!n)return;n.classList.remove(c);void n.offsetWidth;n.classList.add(c);setTimeout(()=>n.classList.remove(c),ms)}
+function floatTxt(side,txt,cls){const s=$('.side.'+side);if(!s)return;const d=document.createElement('span');d.className='dmg '+(cls||'');d.textContent=txt;s.appendChild(d);setTimeout(()=>d.remove(),1150)}
+function banner(t,el){const b=$('#banner');if(!b)return;b.textContent=t;b.style.color=el?`var(--${el})`:'var(--paper)';pulse(b,'on',1000)}
+function flash(el){const f=$('#flash');if(!f)return;f.style.background=`radial-gradient(circle at 50% 55%,var(--${el}),transparent 70%)`;pulse(f,'on',560)}
+
+async function act(a,t,ac){
+ const as=a===B.p?'you':'foe',ts=as==='you'?'foe':'you';
+ const figA=$(`.side.${as} .fig`),figT=$(`.side.${ts} .fig`);
+ if(ac.t==='def'){a.ck=Math.min(a.mck,a.ck+3);say(`${a.n} se defende e recupera chakra.`);upd();await sleep(500);return}
+ if(ac.t==='item'){const h=Math.round(a.mhp*.4);a.hp=Math.min(a.mhp,a.hp+h);B.item=0;floatTxt(as,'+'+h,'heal');say(`${a.n} usa a Pílula de Soldado e recupera ${h} HP.`);upd();await sleep(700);return}
+ let power=1,el=null,pierce=false,drain=0,label='Ataque básico';
+ if(ac.t==='jutsu'){const j=ac.j;a.ck-=j.c;power=j.p;el=j.el||a.el;pierce=!!j.pierce;drain=j.drain||0;label=j.n}
+ banner(label,el);if(el)flash(el);
+ pulse(figA,as==='you'?'lungeR':'lungeL',450);
+ await sleep(300);
+ const m=(el&&!(ac.j&&ac.j.neutral))?mult(el,t.el):1,d=calc(a,power,m,t,pierce);
+ t.hp=Math.max(0,t.hp-d);
+ pulse(figT,'hit',400);pulse($('#arena'),'shake',350);
+ floatTxt(ts,'-'+d,m>1?'adv':m<1?'res':'');
+ say(`${a.n} usa ${label}: ${d} de dano${m>1?' (vantagem elemental)':m<1?' (resistido)':''}${t.gd?' (defendido)':''}.`);
+ if(drain){const h=Math.round(d*drain);a.hp=Math.min(a.mhp,a.hp+h);floatTxt(as,'+'+h,'heal')}
+ upd();await sleep(650);
+}
+async function doRound(pa){
+ if(!B||B.busy||B.over)return;
+ B.busy=true;showActions('busy');
+ if(B.training){
+  B.p.gd=false;await act(B.p,B.e,pa);
+  if(!B)return;
+  if(B.e.hp<=0){B.e.hp=B.e.mhp;say('Alvo reiniciado. Nenhum XP ou progresso foi concedido.')}
+  B.p.ck=Math.min(B.p.mck,B.p.ck+2);B.round++;upd();B.busy=false;showActions('main');return;
+ }
+ const ea=aiPick(B.e);
+ B.p.gd=pa.t==='def';B.e.gd=ea.t==='def';B.e.lastDef=B.e.gd;
+ const order=B.p.spd>=B.e.spd?[[B.p,B.e,pa],[B.e,B.p,ea]]:[[B.e,B.p,ea],[B.p,B.e,pa]];
+ for(const [a,t,ac] of order){if(a.hp<=0||t.hp<=0)break;await act(a,t,ac);if(!B)return}
+ if(B.e.hp<=0)return finish(true);
+ if(B.p.hp<=0)return finish(false);
+ B.p.ck=Math.min(B.p.mck,B.p.ck+2);B.e.ck=Math.min(B.e.mck,B.e.ck+2);
+ B.p.gd=false;B.e.gd=false;B.round++;
+ upd();B.busy=false;showActions('main');
+}
+async function finish(win){
+  if(B.training){
+    B.p.hp=B.p.mhp;B.p.ck=B.p.mck;B.e.hp=B.e.mhp;B.round=1;B.p.gd=false;B.e.gd=false;
+    say('Treino encerrado. HP e Chakra restaurados; nenhum progresso foi gravado.');upd();B.busy=false;showActions('main');return;
+  }
+ B.over=true;
+ say(win?`${B.e.n} caiu. Missão cumprida.`:`${B.p.n} desmaiou.`);
+ await sleep(1100);
+ if(!B)return;
+ const i=B.mi,first=B.story?!(save.storyCleared||[]).includes(i):i===save.cleared,base=reward(i);
+ const xp=win?Math.round(base*(first?1:.4)):Math.round(base*.2);
+ const before={lv:save.lv};
+ save.xp+=xp;save.xpTotal=(save.xpTotal||0)+xp;if(win)save.xpGastavel=(save.xpGastavel||0)+xp;
+ while(save.xp>=need(save.lv)){save.xp-=need(save.lv);save.lv++}
+ let final=false;
+ if(win&&first&&!B.story){save.cleared=Math.min(ENEMIES.length,i+1);final=save.cleared===ENEMIES.length}
+ if(win&&B.story){save.storyCleared=save.storyCleared||[];if(!save.storyCleared.includes(i))save.storyCleared.push(i);save.storyMission=Math.min(i+1,ENEMIES.length-1)}
+ store(save);
+ R={win,xp,before,final,story:B.story,rankUp:rank(save.lv)!==rank(before.lv),newJ:CLASSES[save.cls].jutsus.filter(j=>j.lv>before.lv&&j.lv<=save.lv)};
+ view='result';render();
+}
+function showActions(mode){
+ const box=$('#actions');if(!box||!B)return;
+ const p=B.p;
+ box.className='actions';
+ if(mode==='busy'){box.classList.add('busy');return}
+ if(mode==='jutsu'){
+  box.classList.add('jut');
+  box.innerHTML=p.js.map(j=>{const m=mult(j.el||p.el,B.e.el);
+   const tip=m>1?'<span class="adv">Vantagem x1.5</span>':m<1?'<span class="res">Desvantagem x0.75</span>':'Neutro';
+   return `<button class="btn jbtn" data-act="jutsu" data-j="${j.id}" ${j.c>p.ck?'disabled':''}><span>${j.n}</span><span class="jc num">${j.c} chakra</span><span class="jd">${j.d} ${tip}${j.pierce?' · Ignora defesa':''}${j.drain?' · Cura':''}</span></button>`}).join('')+
+   `<button class="btn ghost" data-act="back">Voltar</button>`;
+  return;
+ }
+ box.innerHTML=`<button class="btn" data-act="atk">Ataque<small>Sem custo</small></button>
+  <button class="btn" data-act="jmenu">Jutsu<small>Gasta chakra</small></button>
+  <button class="btn" data-act="gd">Defender<small>Dano pela metade, +3 chakra</small></button>
+  <button class="btn" data-act="item" ${B.item?'':'disabled'}>Item<small>${B.item?'Pílula: +40% HP':'Já usado'}</small></button>`;
+}
+
+/* ---- Eventos ---- */
+app.addEventListener('click',ev=>{
+ const b=ev.target.closest('[data-act]');if(!b||b.disabled)return;
+ const a=b.dataset.act;
+ if(a==='new'){
+  if(save&&!confirmNew){confirmNew=true;clearTimeout(confirmTimer);confirmTimer=setTimeout(()=>{confirmNew=false;if(view==='menu')render()},4000);render();return}
+  confirmNew=false;view='class';render();
+ }else if(a==='cont'){if(save){view='map';render()}}
+ else if(a==='menu'){confirmNew=false;view='menu';render()}
+ else if(a==='how'){how=true;render()}
+ else if(a==='closehow'){how=false;render()}
+ else if(a==='pick'){save={cls:b.dataset.c,lv:1,xp:0,xpTotal:0,xpGastavel:0,cleared:0,skin:sel||'default',storyMission:0};store(save);view='map';render()}
+ else if(a==='profile'){view='profile';render()}
+ else if(a==='skin'){const owned=SKINS.slice(0,Math.min(SKINS.length,1+Math.floor(save.cleared/2)));if(owned.some(s=>s.id===b.dataset.skin)){save.skin=b.dataset.skin;store(save);render()}}
+ else if(a==='training'){view='training';render()}
+ else if(a==='start-training'){
+  const read=(name,min,max)=>Math.max(min,Math.min(max,Number($(`[name="${name}"]`).value)||min));
+  startBattle(0,true,{hp:read('train-hp',50,500),def:read('train-def',0,20),el:$('[name="train-el"]').value});
+ }
+ else if(a==='story'){storyStage=0;view='story';render()}
+ else if(a==='story-next-dialogue'){storyStage=1;render()}
+ else if(a==='story-fight'||a==='story-skip'||a==='story-retry'){
+  const mission=Math.min(Number(b.dataset.i)||0,ENEMIES.length-1);
+  save.storyMission=mission;store(save);
+  startBattle(mission,false,{story:true});
+ }
+ else if(a==='map'){B=null;view='map';render()}
+ else if(a==='fight'){startBattle(+b.dataset.i)}
+ else if(a==='flee'){if(B?.training){B.p.hp=B.p.mhp;B.p.ck=B.p.mck;B=null;view='training'}else{B=null;view='map'}render()}
+ else if(a==='atk')doRound({t:'atk'});
+ else if(a==='gd')doRound({t:'def'});
+ else if(a==='item')doRound({t:'item'});
+ else if(a==='jmenu')showActions('jutsu');
+ else if(a==='back')showActions('main');
+ else if(a==='jutsu'){const j=B.p.js.find(x=>x.id===b.dataset.j);if(j&&j.c<=B.p.ck)doRound({t:'jutsu',j})}
+});
+app.addEventListener('change',ev=>{
+ if(ev.target.matches('[name="skin-preview"]')){sel=ev.target.value;render()}
+});
+render();
+DattebayoData.load().then(()=>{
+ const status=$('#data-status');
+ if(status)status.textContent=DattebayoData.status();
+});
+})();
+</script>
+
+</body></html>
